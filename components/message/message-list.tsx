@@ -51,13 +51,16 @@ function MessageList({ messages, roomId }: Prop) {
     <ScrollArea className="w-96 flex flex-col justify-end items-start">
       {data?.map((item, idx) => {
         return (
-          <div className="flex justify-start items-center gap-4 px-10 py-2">
+          <div
+            className="flex justify-start items-center gap-4 px-10 py-2"
+            key={item.id}
+          >
             <Avatar>
               <AvatarImage src={item.user.image!} />
               <AvatarFallback>GC</AvatarFallback>
             </Avatar>
 
-            <div className="" key={item.id}>
+            <div className="">
               <p className="font-semibold text-sm text-slate-800">
                 <span className="font-bold">{item.user.name}</span>:{" "}
                 {item.content}
