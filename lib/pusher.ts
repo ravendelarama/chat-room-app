@@ -11,7 +11,15 @@ export const pusher = new Pusher({
     useTLS: true,
 });
 
-export const pusherClient = new Pusherjs("cd14ccdd3e4d87506c1c", {
+function envPusherKey() {
+    if (process.env.NODE_ENV === "development") {
+        return "cd14ccdd3e4d87506c1c";
+    } 
+
+    return "56007b83ee44bcbc8ae6";
+}
+
+export const pusherClient = new Pusherjs(envPusherKey(), {
     cluster: "ap1", // Change with your cluster region.
     authEndpoint: "/api/pusher/auth", // OPTIONAL: For secure web sockets.
     authTransport: "ajax",
