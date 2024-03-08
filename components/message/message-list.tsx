@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Romanesco } from "next/font/google";
 import { useEffect, useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Prop {
   messages:
@@ -49,12 +50,19 @@ function MessageList({ messages, roomId }: Prop) {
   return (
     <ScrollArea className="w-96 flex flex-col justify-end items-start">
       {data?.map((item, idx) => {
-        if (idx == data.length - 1 && data.length > 1) {
-          return null;
-        }
         return (
-          <div className="px-10 py-2" key={item.id}>
-            {item.user.name}: {item.content}
+          <div className="flex justify-start items-center gap-4 px-10 py-2">
+            <Avatar>
+              <AvatarImage src={item.user.image!} />
+              <AvatarFallback>GC</AvatarFallback>
+            </Avatar>
+
+            <div className="" key={item.id}>
+              <p className="font-semibold text-sm text-slate-800">
+                <span className="font-bold">{item.user.name}</span>:{" "}
+                {item.content}
+              </p>
+            </div>
           </div>
         );
       })}
