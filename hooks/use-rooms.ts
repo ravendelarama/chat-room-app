@@ -14,7 +14,7 @@ function useRooms() {
             return data
         },
         staleTime: 6 * 1000,
-        refetchInterval: 10 * 1000
+        refetchInterval: 6 * 1000
     })
 
     return {

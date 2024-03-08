@@ -34,6 +34,8 @@ function RoomForm() {
     await axios.post("/api/room/new", {
       name: values.name,
     });
+
+    form.reset();
   }
 
   return (
