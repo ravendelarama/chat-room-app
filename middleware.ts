@@ -6,6 +6,10 @@ export const { auth } = NextAuth(authConfig);
 export default auth((req) => {
     const { nextUrl } = req;
 
+    
+    if (nextUrl.pathname == "/auth" && req.auth) {
+        return Response.redirect(new URL("/", nextUrl));
+    }
 
 });
 

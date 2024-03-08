@@ -1,7 +1,9 @@
+import { auth } from "@/auth";
 import BackButton from "@/components/back-button";
 import MessageForm from "@/components/message/message-form";
 import MessageList from "@/components/message/message-list";
 import db from "@/lib/db";
+import { redirect } from "next/navigation";
 
 interface Prop {
   params: {
@@ -10,6 +12,12 @@ interface Prop {
 }
 
 async function ChatRoomPage({ params: { roomId } }: Prop) {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/auth");
+  }
+
   const room = await db.room.findFirst({
     where: {
       id: roomId,
