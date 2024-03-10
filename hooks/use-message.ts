@@ -10,13 +10,16 @@ type Message = {
     content: string;
     userId: string;
     roomId: string;
+    createdAt: Date;
+    updatedAt: Date;
     user: {
         id: string;
         name: string;
         email: string | null;
         emailVerified: Date | null;
         image: string | null;
-        online: boolean;
+        createdAt: Date;
+        updatedAt: Date;
     }
 };
 
@@ -41,6 +44,7 @@ function useMessage(initialData: Message[], roomId: string) {
         
         return () => {
             pusherClient.unsubscribe(roomId);
+            pusherClient.unbind("message:create")
         }
     }, []);
     

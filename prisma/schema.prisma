@@ -38,22 +38,53 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  online        Boolean   @default(false)
   accounts      Account[]
   message       Message[]
+  rooms         Room[]    @relation(fields: [roomIDs], references: [id])
+  roomIDs       String[]  @db.ObjectId
+  createdAt     DateTime  @default(now()) @db.Timestamp
+  updatedAt     DateTime  @default(now()) @updatedAt @db.Timestamp
 }
 
 model Room {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  messages Message[]
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  memberIDs   String[]  @db.ObjectId
+  members     User[]    @relation(fields: [memberIDs], references: [id])
+  messages    Message[]
+  description String?
+  image       String?
+  private     Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @db.Timestamp
+  updatedAt   DateTime  @default(now()) @updatedAt @db.Timestamp
+}
+
+model Attachment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  type      Media
+  source    String
+  createdAt DateTime @default(now())
+  Message   Message? @relation(fields: [messageId], references: [id])
+  messageId String?  @db.ObjectId
 }
 
 model Message {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
-  content String
-  userId  String @db.ObjectId
-  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  room    Room   @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId  String @db.ObjectId
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  content     String
+  userId      String       @db.ObjectId
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room        Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId      String       @db.ObjectId
+  deletedAt   DateTime?
+  createdAt   DateTime     @default(now()) @db.Timestamp
+  updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamp
+  attachments Attachment[]
+}
+
+enum Media {
+  image
+  video
+  audio
+  document
+  url
 }

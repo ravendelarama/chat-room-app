@@ -9,6 +9,7 @@ export default async function addMessage(roomId: string, content: string) {
     const session = await auth();
     console.log(`User ID: ${session?.user?.id}`);
     console.log(`Room ID: ${roomId}`)
+    
     const message = await db.message.create({
         data: {
             userId: session?.user.id!,

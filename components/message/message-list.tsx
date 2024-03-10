@@ -14,15 +14,18 @@ interface Prop {
     | {
         id: string;
         content: string;
-        userId: string;
         roomId: string;
+        userId: string;
+        createdAt: Date;
+        updatedAt: Date;
         user: {
           id: string;
           name: string;
           email: string | null;
           emailVerified: Date | null;
           image: string | null;
-          online: boolean;
+          createdAt: Date;
+          updatedAt: Date;
         };
       }[]
     | undefined;
@@ -40,7 +43,6 @@ type Message = {
     email: string | null;
     emailVerified: Date | null;
     image: string | null;
-    online: boolean;
   };
 };
 

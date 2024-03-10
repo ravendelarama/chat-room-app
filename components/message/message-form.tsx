@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
-import addMessage from "@/actions/message";
+import addMessage from "@/actions/chat";
 
 const formSchema = z.object({
   message: z.string().min(1, {

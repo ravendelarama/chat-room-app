@@ -15,7 +15,7 @@ export const {
     adapter: PrismaAdapter(db),
     secret: process.env.AUTH_SECRET,
     session: { strategy: "jwt" },
-    pages: { signIn: "/auth" },
+    // pages: { signIn: "/auth" },
     events: {
         linkAccount: async ({ user }) => {
             await db.user.update({

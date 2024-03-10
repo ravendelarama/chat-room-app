@@ -11,15 +11,16 @@ import { useRouter } from "next/navigation";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { useSession } from "next-auth/react";
 import joinRoom from "@/actions/join-room";
+import useJoinedChannels from "@/hooks/use-joined-channels";
 
-function PublicRoomList() {
-  const { rooms, status, fetchStatus, error } = useRooms();
+function PrivateRoomList() {
+  const { joinedRooms } = useJoinedChannels();
   const router = useRouter();
   const { data: session } = useSession();
 
   return (
     <div className="py-5 pl-6 flex justify-evenlly gap-2 flex-wrap items-center">
-      {rooms?.map((item) => {
+      {joinedRooms?.map((item) => {
         return (
           <div className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full">
             <div className="flex flex-col items-start gap-1 w-full">
@@ -47,9 +48,7 @@ function PublicRoomList() {
                     }
                   }}
                 >
-                  {item.memberIDs.includes(session?.user?.id!)
-                    ? "Connect"
-                    : "Join Room"}
+                  Connect
                 </Button>
               </div>
               <p className="text-gray-500 font-bold text-xs flex">
@@ -69,4 +68,4 @@ function PublicRoomList() {
   );
 }
 
-export default PublicRoomList;
+export default PrivateRoomList;

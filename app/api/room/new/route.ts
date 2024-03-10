@@ -1,14 +1,20 @@
+import { auth } from "@/auth";
 import db from "@/lib/db";
 import { NextResponse } from "next/server";
 
 
 async function POST(req: Request) {
     try {
-        const { name } = await req.json();
+        const session = await auth();
+        const { name, image, isPrivate, description } = await req.json();
 
         await db.room.create({
             data: {
-                name
+                name,
+                image,
+                private: isPrivate,
+                description,
+                memberIDs: [session?.user?.id!]
             }
         });
 
