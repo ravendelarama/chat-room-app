@@ -84,12 +84,12 @@ function Navbar() {
         <Tooltip>
           <TooltipTrigger>
             <Button
-              className="bg-transparent hover:bg-transparent w-fit p-0"
+              className="bg-transparent hover:bg-transparent w-fit p-0 self-end"
               onClick={() => {
                 signOut();
               }}
             >
-              <FiLogOut className="h-9 w-9 text-gray-500" />
+              <FiLogOut className="h-9 w-9 text-gray-800" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
