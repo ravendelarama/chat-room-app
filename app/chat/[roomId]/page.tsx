@@ -26,6 +26,7 @@ async function ChatRoomPage({ params: { roomId } }: Prop) {
     include: {
       messages: {
         include: {
+          attachments: true,
           user: true,
         },
       },
@@ -34,7 +35,7 @@ async function ChatRoomPage({ params: { roomId } }: Prop) {
 
   return (
     <div className="h-full w-full flex flex-col justify-end gap-5 items-center p-10">
-      <div className="flex justify-between items-center w-full gap-10">
+      <div className="flex justify-between items-center w-full ">
         <BackButton />
         <h1 className="text-2xl font-bold">{room?.name}</h1>
         <Badge

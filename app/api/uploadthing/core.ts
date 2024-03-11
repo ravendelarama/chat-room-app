@@ -29,7 +29,12 @@ export const ourFileRouter = {
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
       return { uploadedBy: metadata.userId };
     }),
-    messageAttachment: f({ image: { maxFileSize: "4MB", maxFileCount: 5 }, video: { maxFileCount: 1, maxFileSize: "128MB" } })
+  messageAttachment: f({
+    image: { maxFileSize: "4MB", maxFileCount: 4 },
+    video: { maxFileCount: 1, maxFileSize: "128MB" },
+    audio: { maxFileSize: "8MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "16MB", maxFileCount: 1 }
+  })
         .middleware(async ({ req }) => {
             const user = auth(req);
             return { userId: user.id };

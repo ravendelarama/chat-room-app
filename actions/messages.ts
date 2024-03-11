@@ -8,7 +8,8 @@ export default async function getMessages(roomId: string) {
             roomId
         },
         include: {
-            user: true
+            user: true,
+            attachments: true
         }
     });
 }

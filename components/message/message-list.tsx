@@ -1,15 +1,14 @@
 "use client";
 
-import getMessages from "@/actions/messages";
 import useMessage from "@/hooks/use-message";
-import { pusherClient } from "@/lib/pusher";
-import { useQuery } from "@tanstack/react-query";
-import { Romanesco } from "next/font/google";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { Attachment } from "@prisma/client";
+import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
+import ImageAttachment from "./image-attachment";
+import MessageContent from "./message-content";
+import ChatUserAvatar from "./chat-user-avatar";
 
 interface Prop {
   messages:
@@ -29,68 +28,70 @@ interface Prop {
           createdAt: Date;
           updatedAt: Date;
         };
+        attachments: Attachment[];
       }[]
     | undefined;
   roomId: string;
 }
 
-type Message = {
-  id: string;
-  content: string;
-  userId: string;
-  roomId: string;
-  user: {
-    id: string;
-    name: string;
-    email: string | null;
-    emailVerified: Date | null;
-    image: string | null;
-  };
-};
+// Refactored
 
 function MessageList({ messages, roomId }: Prop) {
   const { data } = useMessage(messages!, roomId);
-  const router = useRouter();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     scrollRef?.current?.scrollIntoView();
   });
 
   return (
-    <ScrollArea className="h-full w-100 flex flex-col justify-end items-center">
+    <ScrollArea className="border-x h-full w-[40rem] flex flex-col justify-end items-start">
       {data?.map((item, idx) => {
         return (
-          <div
-            className="flex justify-start items-center gap-4 px-10 py-2"
-            key={item.id}
-          >
-            <Button
-              variant={null}
-              className="w-0"
-              onClick={() => {
-                router.push(`/${item.userId}`);
-              }}
-            >
-              <Avatar>
-                <AvatarImage src={item.user.image!} />
-                <AvatarFallback>GC</AvatarFallback>
-              </Avatar>
-            </Button>
-
-            <div className="flex flex-col w-full">
-              <div className="flex justify-between items-center w-full">
-                <p className="font-bold text-sm text-slate-800 ">
-                  {item.user.name}
-                </p>
-                <p className="font-bold text-xs text-gray-500">
-                  {item.updatedAt.getHours()}:{item.updatedAt.getMinutes()}
+          <div className="px-10 py-2 flex flex-col w-full" key={item.id}>
+            {/* Chat Header */}
+            {item.userId !== data[idx - 1]?.userId! && (
+              <div
+                className={cn(
+                  "flex gap-5 items-center",
+                  item.userId === session?.user?.id &&
+                    "justify-start flex-row-reverse"
+                )}
+              >
+                {item.userId !== session?.user?.id && (
+                  <ChatUserAvatar item={item} />
+                )}
+                <p className="font-bold text-sm text-slate-800">
+                  {item.userId !== session?.user?.id ? item.user.name : "You"}
                 </p>
               </div>
-              <div className="flex flex-col">
-                <p className="text-sm font-semibold text-gray-500">
-                  {item.content}
-                </p>
+            )}
+
+            {/* Chat Bubble */}
+            <div
+              className={cn(
+                "pl-16 flex flex-col gap-y-2",
+                item.userId === session?.user?.id &&
+                  "pl-0 flex-row-reverse justify-start"
+              )}
+            >
+              <div
+                className={cn(
+                  "flex flex-col gap-y-4",
+                  item.userId === session?.user?.id && "items-end"
+                )}
+              >
+                {item.content.length > 0 && <MessageContent item={item} />}
+
+                {/* Rendering multiple attachments */}
+                <div>
+                  {item.attachments.map((item) => {
+                    if (item.type.startsWith("image")) {
+                      return <ImageAttachment item={item} />;
+                    }
+                  })}
+                </div>
               </div>
             </div>
           </div>

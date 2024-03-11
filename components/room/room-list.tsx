@@ -26,12 +26,13 @@ function PublicRoomList() {
             className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
           >
             <div className="flex flex-col items-start gap-1 w-full">
-              <div className="w-[250px]">
+              <div className="w-full">
                 <AspectRatio ratio={16 / 9}>
                   <Image
                     src={`https://utfs.io/f/${item.image!}`}
                     alt={item.name!}
-                    fill
+                    width={500}
+                    height={100}
                     className="object-cover rounded-md"
                   />
                 </AspectRatio>

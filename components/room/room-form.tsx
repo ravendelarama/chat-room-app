@@ -24,7 +24,6 @@ import { useUploadThing } from "@/utils/uploadthing";
 import { useCallback, useState } from "react";
 import { Textarea } from "../ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { toast } from "sonner";
 
@@ -150,9 +149,7 @@ function RoomForm() {
             </TabsContent>
             <TabsContent value="advance" className="flex flex-col gap-5">
               {/*Uploading Dropzone */}
-              <p className="font-bold text-gray-800">
-                Channel Cover (optional)
-              </p>
+              <p className="font-bold text-gray-800">Channel Cover</p>
               <div
                 {...getRootProps()}
                 className="relative border-2 border-dashed border-gray-300 focus:border-gray-800 px-5 pb-5 flex justify-center items-center rounded-md h-52"
@@ -174,6 +171,8 @@ function RoomForm() {
                 )}
                 {files.length == 0 && "Drop your files here!"}
               </div>
+
+              {/* Private Channel */}
               <FormField
                 control={form.control}
                 name="private"
@@ -196,6 +195,7 @@ function RoomForm() {
                   </FormItem>
                 )}
               />
+
               <Button type="submit" className="w-full" disabled={isUploading}>
                 Create a room
               </Button>

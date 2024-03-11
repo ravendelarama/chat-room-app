@@ -2,6 +2,7 @@
 
 import getMessages from "@/actions/messages";
 import { pusherClient } from "@/lib/pusher";
+import { Attachment, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -20,7 +21,8 @@ type Message = {
         image: string | null;
         createdAt: Date;
         updatedAt: Date;
-    }
+    };
+    attachments: Attachment[]
 };
 
 function useMessage(initialData: Message[], roomId: string) {
@@ -30,7 +32,7 @@ function useMessage(initialData: Message[], roomId: string) {
             const m = await getMessages(roomId);
             return m;
         },
-        initialData 
+        initialData
     })
 
     const [messages, setMessages] = useState<Message[]>(data);

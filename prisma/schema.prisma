@@ -61,7 +61,7 @@ model Room {
 
 model Attachment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  type      Media
+  type      String
   source    String
   createdAt DateTime @default(now()) @db.Timestamp
   Message   Message? @relation(fields: [messageId], references: [id])
@@ -79,12 +79,4 @@ model Message {
   createdAt   DateTime     @default(now()) @db.Timestamp
   updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamp
   attachments Attachment[]
-}
-
-enum Media {
-  image
-  video
-  audio
-  document
-  url
 }
