@@ -1,11 +1,12 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { IoChatbubbleOutline } from "react-icons/io5";
 import { MdOutlineExplore } from "react-icons/md";
+import { FiLogOut } from "react-icons/fi";
 import RoomCreateModal from "../room/room-create-modal";
 import {
   Tooltip,
@@ -78,6 +79,24 @@ function Navbar() {
       <div>
         <RoomCreateModal />
       </div>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              className="bg-transparent hover:bg-transparent w-fit p-0"
+              onClick={() => {
+                signOut();
+              }}
+            >
+              <FiLogOut className="h-9 w-9 text-gray-500" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Sign out</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
     </div>
   );
 }
