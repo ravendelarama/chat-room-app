@@ -22,7 +22,10 @@ function PrivateRoomList() {
     <div className="py-5 pl-6 flex justify-evenlly gap-2 flex-wrap items-center">
       {joinedRooms?.map((item) => {
         return (
-          <div className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full">
+          <div
+            key={item.id}
+            className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
+          >
             <div className="flex flex-col items-start gap-1 w-full">
               <div className="w-full">
                 <AspectRatio ratio={16 / 9}>

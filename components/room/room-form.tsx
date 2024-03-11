@@ -182,7 +182,7 @@ function RoomForm() {
                         Private Channel
                       </FormLabel>
                       <FormDescription>
-                        This channel won't appear in the public.
+                        This channel won&apos;t appear in the public.
                       </FormDescription>
                     </div>
                     <FormControl>
