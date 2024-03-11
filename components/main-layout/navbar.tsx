@@ -19,7 +19,7 @@ function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <div className="w-fit flex flex-col justify-start gap-10 p-5 border-r border-r-gray-500">
+    <div className="left-0 top-0 w-fit flex flex-col justify-start gap-10 p-5 border-r border-r-gray-500">
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>

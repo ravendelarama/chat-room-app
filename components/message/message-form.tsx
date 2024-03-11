@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 
+import { useDropzone } from "@uploadthing/react";
+import { generateClientDropzoneAccept } from "uploadthing/client";
+
+import { useUploadThing } from "@/utils/uploadthing";
+
 import {
   Form,
   FormControl,
@@ -18,6 +23,8 @@ import { Button } from "@/components/ui/button";
 import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
 import addMessage from "@/actions/chat";
+import { useCallback, useState } from "react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   message: z.string().min(1, {
@@ -35,16 +42,60 @@ function MessageForm({ roomId }: { roomId: string }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // await axios.post("/api/message/new", {
-    //   roomId,
-    //   content: values.message,
-    // });
     form.reset();
-    await addMessage(roomId, values.message!);
+    await addMessage(roomId, values.message!, uploadedFiles!);
   }
+
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { type: string; source: string }[]
+  >([]);
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles(acceptedFiles);
+  }, []);
+
+  const { startUpload, permittedFileInfo } = useUploadThing(
+    "messageAttachment",
+    {
+      onClientUploadComplete: (res) => {
+        const arr = res.map((item) => {
+          return {
+            type: item.type.split("/")[0],
+            source: item.name,
+          };
+        });
+        setUploadedFiles(arr);
+        toast("Uploading Successful!");
+      },
+      onUploadError: () => {
+        toast("Uploading Failed!");
+      },
+      onUploadBegin: () => {},
+    }
+  );
+
+  const fileTypes = permittedFileInfo?.config
+    ? Object.keys(permittedFileInfo?.config)
+    : [];
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
+  });
 
   return (
     <>
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        <div>
+          {files.length > 0 && (
+            <Button variant={"default"} onClick={() => startUpload(files)}>
+              Upload {files.length} files
+            </Button>
+          )}
+        </div>
+        Drop files here!
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

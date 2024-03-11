@@ -22,7 +22,8 @@ async function ChannelInvitePage({
 
   return (
     <div className="h-full w-full flex flex-col justify-center items-center">
-      <RoomJoinModal room={room} />
+      {/* @ts-ignore */}
+      <RoomJoinModal room={data} />
     </div>
   );
 }

@@ -32,7 +32,8 @@ function PrivateRoomList() {
                   <Image
                     src={`https://utfs.io/f/${item.image!}`}
                     alt={item.name!}
-                    fill
+                    width={300}
+                    height={100}
                     className="object-cover rounded-md"
                   />
                 </AspectRatio>

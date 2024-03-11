@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import PublicRoomList from "@/components/room/room-list";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { redirect } from "next/navigation";
 
 async function ExplorePage() {
@@ -11,7 +12,9 @@ async function ExplorePage() {
 
   return (
     <div className="p-10">
-      <PublicRoomList />
+      <ScrollArea>
+        <PublicRoomList />
+      </ScrollArea>
     </div>
   );
 }

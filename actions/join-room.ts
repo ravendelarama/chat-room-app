@@ -2,7 +2,7 @@
 
 import { auth } from "@/auth";
 import db from "@/lib/db";
-import { permanentRedirect, redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
 
 
@@ -24,7 +24,7 @@ async function joinRoom(roomId: string) {
 
     console.log(data.memberIDs.length);
     
-    permanentRedirect(`/chat/${data.id}`);
+    redirect(`/chat/${data.id}`);
 
 //     return {
 //         message: `${session?.user?.name} has join the channel.`

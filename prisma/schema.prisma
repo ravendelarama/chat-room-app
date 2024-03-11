@@ -63,7 +63,7 @@ model Attachment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   type      Media
   source    String
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @db.Timestamp
   Message   Message? @relation(fields: [messageId], references: [id])
   messageId String?  @db.ObjectId
 }

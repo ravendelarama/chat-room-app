@@ -56,6 +56,7 @@ function RoomForm() {
   const { startUpload, isUploading, permittedFileInfo } = useUploadThing(
     "channelImageUploader",
     {
+      // @ts-ignore
       onClientUploadComplete: (res) => {
         const src = res[0].key;
         setUploadedFile(src);
