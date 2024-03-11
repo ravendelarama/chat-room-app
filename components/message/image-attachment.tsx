@@ -15,10 +15,9 @@ interface Prop {
 
 function ImageAttachment({ item }: Prop) {
   return (
-    <Dialog key={item.id}>
+    <Dialog>
       <DialogTrigger>
         <Image
-          key={item.id}
           src={`https://utfs.io/f/${item.source!}`}
           alt={item.source}
           width={300}
@@ -28,7 +27,6 @@ function ImageAttachment({ item }: Prop) {
       </DialogTrigger>
       <DialogContent className="max-w-full bg-transparent shadow-none border-hidden h-96 w-full">
         <Image
-          key={item.id}
           src={`https://utfs.io/f/${item.source!}`}
           alt={item.source}
           fill

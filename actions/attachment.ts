@@ -35,17 +35,17 @@ export default async function addAttachment(roomId: string, attachments: {type: 
             })
         })
     }
-    const data = await db.message.findFirst({
-        where: {
-            id: message.id
-        },
-        include: {
-            attachments: true,
-            user: true
-        }
-    })
+        const data = await db.message.findFirst({
+            where: {
+                id: message.id
+            },
+            include: {
+                attachments: true,
+                user: true
+            }
+        })
 
-    await pusher.trigger(roomId, "message:create", data)
+        await pusher.trigger(roomId, "message:create", data)
 
     return {
         success: "Added a message"
