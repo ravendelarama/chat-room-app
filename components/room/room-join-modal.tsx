@@ -15,7 +15,7 @@ import joinRoom from "@/actions/join-room";
 import Image from "next/image";
 import { AspectRatio } from "../ui/aspect-ratio";
 
-function RoomJoinModal({ room }: { room: Room }) {
+function RoomJoinModal({ room }: { room: any }) {
   return (
     <div className="w-full flex justify-center items-center">
       <Card className="w-100">
