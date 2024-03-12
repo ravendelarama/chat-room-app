@@ -19,7 +19,7 @@ const schema = z.array(z.object({
 
 function useJoinedChannels() {
     const { data: joinedRooms, status, fetchStatus, error } = useQuery({
-            queryKey: ["room"],
+        queryKey: ["room"],
         queryFn: async () => await getJoinedRooms(),
         staleTime: 5 * 1000,
         refetchInterval: 5 * 1000

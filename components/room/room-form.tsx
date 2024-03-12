@@ -57,7 +57,9 @@ function RoomForm() {
     {
       // @ts-ignore
       onClientUploadComplete: (res) => {
-        const src = res[0].key;
+        const str = res[0].url.split("/");
+        const src = str[str.length - 1];
+
         setUploadedFile(src);
 
         toast("Uploaded Successful!", {
