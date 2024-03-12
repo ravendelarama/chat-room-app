@@ -20,7 +20,9 @@ const schema = z.array(z.object({
 function useRooms() {
     const { data:rooms, status, fetchStatus, error } = useQuery({
             queryKey: ["room"],
-        queryFn: async () => await getPublicRooms()
+        queryFn: async () => await getPublicRooms(),
+        staleTime: 5 * 1000,
+        refetchInterval: 5 * 1000,
     })
 
     return {
