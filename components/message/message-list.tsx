@@ -10,6 +10,26 @@ import ImageAttachment from "./image-attachment";
 import MessageContent from "./message-content";
 import ChatUserAvatar from "./chat-user-avatar";
 
+type Message = {
+  id: string;
+  content: string;
+  userId: string;
+  roomId: string;
+  deletedAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  user: {
+    id: string;
+    name: string;
+    email: string | null;
+    emailVerified: Date | null;
+    image: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  attachments: Attachment[];
+};
+
 interface Prop {
   messages:
     | {
@@ -62,39 +82,23 @@ function MessageList({ messages, roomId }: Prop) {
                 {item.userId !== session?.user?.id && (
                   <ChatUserAvatar item={item} />
                 )}
-                <p className="font-bold text-sm text-slate-800">
-                  {item.userId !== session?.user?.id ? item.user.name : "You"}
-                </p>
+                <div>
+                  <p className="font-bold text-sm text-slate-800">
+                    {item.userId !== session?.user?.id ? item.user.name : "You"}
+                  </p>
+                </div>
               </div>
             )}
 
             {/* Chat Bubble */}
             <div
               className={cn(
-                "pl-16 flex flex-col gap-y-2",
-                item.userId === session?.user?.id &&
-                  "pl-0 flex-row-reverse justify-start"
+                "flex justify-end items-center gap-4",
+                item.userId !== session?.user?.id && "flex-row-reverse"
               )}
             >
-              <div
-                className={cn(
-                  "flex flex-col gap-y-4",
-                  item.userId === session?.user?.id && "items-end"
-                )}
-              >
-                {item.content.length > 0 && (
-                  <MessageContent item={item} key={item.id} />
-                )}
-
-                {/* Rendering multiple attachments */}
-                <div>
-                  {item.attachments.map((item) => {
-                    if (item.type.startsWith("image")) {
-                      return <ImageAttachment item={item} key={item.id} />;
-                    }
-                  })}
-                </div>
-              </div>
+              {/* @ts-ignore */}
+              <MessageContent item={item} />
             </div>
           </div>
         );

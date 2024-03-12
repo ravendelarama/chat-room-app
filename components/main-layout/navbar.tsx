@@ -20,83 +20,38 @@ function Navbar() {
 
   return (
     <div className="left-0 top-0 w-fit flex flex-col justify-start gap-10 p-5 border-r border-r-gray-500">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              className="bg-transparent hover:bg-transparent w-fit p-0"
-              asChild
-            >
-              <Link href={`/${session?.user?.id}`}>
-                <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
-                  <AvatarImage src={session?.user?.image!} />
-                  <AvatarFallback className="text-gray-800">CN</AvatarFallback>
-                </Avatar>
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Profile</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
+        <Link href={`/${session?.user?.id}`}>
+          <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
+            <AvatarImage src={session?.user?.image!} />
+            <AvatarFallback className="text-gray-800">CN</AvatarFallback>
+          </Avatar>
+        </Link>
+      </Button>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              className="bg-transparent hover:bg-transparent w-fit p-0"
-              asChild
-            >
-              <Link href="/explore">
-                <MdOutlineExplore className="h-9 w-9 text-gray-800" />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Explore</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
+        <Link href="/explore">
+          <MdOutlineExplore className="h-9 w-9 text-gray-800" />
+        </Link>
+      </Button>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              className="bg-transparent hover:bg-transparent w-fit p-0"
-              asChild
-            >
-              <Link href="/">
-                <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
-              </Link>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Chat rooms</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
+        <Link href="/">
+          <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
+        </Link>
+      </Button>
       <div>
         <RoomCreateModal />
       </div>
 
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              className="bg-transparent hover:bg-transparent w-fit p-0 self-end"
-              onClick={() => {
-                signOut();
-              }}
-            >
-              <FiLogOut className="h-9 w-9 text-gray-800" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Sign out</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      <Button
+        className="bg-transparent hover:bg-transparent w-fit p-0 self-end"
+        onClick={() => {
+          signOut();
+        }}
+      >
+        <FiLogOut className="h-9 w-9 text-gray-800" />
+      </Button>
     </div>
   );
 }

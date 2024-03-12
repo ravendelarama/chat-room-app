@@ -43,6 +43,22 @@ function useMessage(initialData: Message[], roomId: string) {
         pusherClient.bind("message:create", (message) => {
             setMessages((prev) => [...prev!, message]);
         });
+
+        // @ts-ignore
+        pusherClient.bind("message:remove", (message) => {
+            
+            setMessages((prev) => {
+                const newMessages = prev.map((item) => {
+                    if (item.id === message.id) {
+                        // @ts-ignore
+                        item.deletedAt = message.deletedAt
+                    }
+                    return item
+                });
+                return newMessages
+            })
+        })
+
         
         return () => {
             pusherClient.unsubscribe(roomId);

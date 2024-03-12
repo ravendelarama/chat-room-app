@@ -4,7 +4,6 @@ import { auth } from "@/auth";
 import db from "@/lib/db";
 import { pusher } from "@/lib/pusher";
 import z from "zod";
-import { Attachment } from "@prisma/client";
 
 const schema = z.array(z.object({
     type: z.string(),
@@ -23,6 +22,8 @@ export default async function addAttachment(roomId: string, attachments: {type: 
             content: "",
         }
     });
+
+    console.log(attachments);
 
     if (validate.success && attachments.length > 0) {
         const attached = await db.attachment.createMany({

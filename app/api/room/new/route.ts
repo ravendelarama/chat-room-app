@@ -8,6 +8,8 @@ async function POST(req: Request) {
         const session = await auth();
         const { name, image, isPrivate, description } = await req.json();
 
+        console.log(`image:${image}`)
+
         await db.room.create({
             data: {
                 name,

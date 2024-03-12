@@ -19,25 +19,15 @@ function RoomCreateModal() {
   return (
     <>
       <Dialog>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <DialogTrigger>
-                <IoAddCircleOutline className="h-9 w-9" />
-              </DialogTrigger>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Create new channel</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <DialogTrigger>
+          <IoAddCircleOutline className="h-9 w-9" />
+        </DialogTrigger>
         <DialogContent className="w-fit">
           <DialogHeader>
             <DialogTitle>Create a new channel</DialogTitle>
-            <DialogDescription>
-              <RoomForm />
-            </DialogDescription>
           </DialogHeader>
+
+          <RoomForm />
         </DialogContent>
       </Dialog>
     </>

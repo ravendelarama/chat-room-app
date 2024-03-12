@@ -64,7 +64,7 @@ model Attachment {
   type      String
   source    String
   createdAt DateTime @default(now()) @db.Timestamp
-  Message   Message? @relation(fields: [messageId], references: [id])
+  Message   Message? @relation(fields: [messageId], references: [id], onDelete: Cascade)
   messageId String?  @db.ObjectId
 }
 

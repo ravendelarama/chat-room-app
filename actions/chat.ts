@@ -31,3 +31,24 @@ export default async function addMessage(roomId: string, content: string) {
         success: "Added a message"
     }
 }
+
+export async function deleteMessage(roomId: string, messageId: string) {
+    const deleted = await db.message.update({
+        where: {
+            id: messageId
+        },
+        data: {
+            deletedAt: new Date()
+        },
+        include: {
+            attachments: true,
+            user: true
+        }
+    });
+
+    await pusher.trigger(roomId, "message:remove", deleted);
+
+    return {
+        message: "Message deleted!"
+    }
+}

@@ -54,8 +54,6 @@ function MessageForm({ roomId }: { roomId: string }) {
     },
   });
 
-  const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
     form.reset();
     await addMessage(roomId, values.message!);
@@ -76,17 +74,16 @@ function MessageForm({ roomId }: { roomId: string }) {
             onClientUploadComplete={async (res) => {
               // Do something with the response
               console.log("Files: ", res);
-              setUploadedFiles(
+              await addAttachment(
+                roomId,
                 res.map((item) => {
-                  var arr = item.url.split("/");
-                  var source = arr[arr.length - 1];
+                  const src = item.url.split("/");
                   return {
                     type: item.type,
-                    source,
+                    source: src[src.length - 1],
                   };
                 })
               );
-              await addAttachment(roomId, uploadedFiles!);
 
               toast("Files Uploaded Successfully!");
             }}

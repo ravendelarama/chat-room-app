@@ -1,10 +1,27 @@
+import { deleteMessage } from "@/actions/chat";
+import { pusherClient } from "@/lib/pusher";
+import { cn } from "@/lib/utils";
 import { Attachment } from "@prisma/client";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { SlOptionsVertical } from "react-icons/sl";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import ImageAttachment from "./image-attachment";
+import { useSession } from "next-auth/react";
 
 type Message = {
   id: string;
   content: string;
   userId: string;
   roomId: string;
+  deletedAt: Date;
   createdAt: Date;
   updatedAt: Date;
   user: {
@@ -24,11 +41,84 @@ interface Prop {
 }
 
 function MessageContent({ item }: Prop) {
+  const { data: session } = useSession();
+  const [deleted, setDeleted] = useState<Message | null>(null);
+
   return (
-    <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
-      <p className="text-sm font-semibold text-gray-500 m-w-24">
-        {item.content}
-      </p>
+    <div
+      className={cn(
+        "flex gap-2",
+        item.userId !== session?.user.id && "flex-row-reverse"
+      )}
+    >
+      {!item.deletedAt && (
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            className={cn(
+              "pb-3 outline-none",
+              session?.user?.id !== item.userId && "hidden"
+            )}
+          >
+            <SlOptionsVertical />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuLabel>Edit</DropdownMenuLabel>
+            <DropdownMenuItem asChild>
+              <Button
+                variant={null}
+                onClick={async () => {
+                  await deleteMessage(item.roomId, item.id);
+                }}
+              >
+                Delete message
+              </Button>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+      <div
+        className={cn(
+          "pl-16 flex flex-col gap-y-2",
+          item.userId === session?.user?.id &&
+            "pl-0 flex-row-reverse justify-start"
+        )}
+      >
+        <div
+          className={cn(
+            "flex flex-col gap-y-4",
+            item.userId === session?.user?.id && "items-end"
+          )}
+        >
+          {item.content.length > 0 && (
+            <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
+              <p
+                className={cn(
+                  "text-sm font-semibold text-gray-800 text-wrap break-words",
+                  item.content.length > 24 && !item?.deletedAt && "w-[20rem]",
+                  item?.deletedAt && "italic font-normal"
+                )}
+              >
+                {!item?.deletedAt ? item.content : "Message deleted"}
+              </p>
+            </div>
+          )}
+
+          {/* Rendering multiple attachments */}
+          <div
+            className={cn(
+              "flex flex-col items-end gap-y-4",
+              item.userId != session?.user?.id && "items-start"
+            )}
+          >
+            {!item.deletedAt &&
+              item.attachments.map((item) => {
+                if (item.type.startsWith("image")) {
+                  return <ImageAttachment item={item} key={item.id} />;
+                }
+              })}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

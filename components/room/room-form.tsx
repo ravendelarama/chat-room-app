@@ -57,10 +57,8 @@ function RoomForm() {
     {
       // @ts-ignore
       onClientUploadComplete: (res) => {
-        const str = res[0].url.split("/");
-        const src = str[str.length - 1];
-
-        setUploadedFile(src);
+        const src = res[0].url.split("/");
+        setUploadedFile(src[src.length - 1]);
 
         toast("Uploaded Successful!", {
           description: uploadedFile,
@@ -97,19 +95,16 @@ function RoomForm() {
     <div className="py-5">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="w-max">
-          <Tabs defaultValue="basic" className="w-full flex flex-col gap-5">
-            <TabsList className="w-full flex justify-evenly">
-              <TabsTrigger value="basic" className="w-full">
+          <Tabs defaultValue="step-1" className="w-[400px]">
+            <TabsList className="w-full">
+              <TabsTrigger value="step-1" className="w-full">
                 Step 1
               </TabsTrigger>
-              <TabsTrigger value="advance" className="w-full">
+              <TabsTrigger value="step-2" className="w-full">
                 Step 2
               </TabsTrigger>
             </TabsList>
-            <TabsContent
-              value="basic"
-              className="flex flex-col gap-5 w-[400px]"
-            >
+            <TabsContent value="step-1">
               <FormField
                 control={form.control}
                 name="name"
@@ -131,7 +126,7 @@ function RoomForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-bold text-gray-800">
-                      Description {"(optional)"}
+                      Description
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -149,7 +144,7 @@ function RoomForm() {
                 )}
               />
             </TabsContent>
-            <TabsContent value="advance" className="flex flex-col gap-5">
+            <TabsContent value="step-2">
               {/*Uploading Dropzone */}
               <p className="font-bold text-gray-800">Channel Cover</p>
               <div
@@ -198,7 +193,11 @@ function RoomForm() {
                 )}
               />
 
-              <Button type="submit" className="w-full" disabled={isUploading}>
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={uploadedFile.length < 1 || isUploading}
+              >
                 Create a room
               </Button>
             </TabsContent>
