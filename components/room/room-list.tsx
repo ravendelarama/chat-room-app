@@ -3,7 +3,6 @@
 import useRooms from "@/hooks/use-rooms";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { useQuery } from "@tanstack/react-query";
 import { Room } from "@prisma/client";
 import Image from "next/image";
 import { AspectRatio } from "../ui/aspect-ratio";
