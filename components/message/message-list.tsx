@@ -82,13 +82,15 @@ function MessageList({ messages, roomId }: Prop) {
                   item.userId === session?.user?.id && "items-end"
                 )}
               >
-                {item.content.length > 0 && <MessageContent item={item} />}
+                {item.content.length > 0 && (
+                  <MessageContent item={item} key={item.id} />
+                )}
 
                 {/* Rendering multiple attachments */}
                 <div>
                   {item.attachments.map((item) => {
                     if (item.type.startsWith("image")) {
-                      return <ImageAttachment item={item} />;
+                      return <ImageAttachment item={item} key={item.id} />;
                     }
                   })}
                 </div>
