@@ -66,10 +66,13 @@ function MessageList({ messages, roomId }: Prop) {
   });
 
   return (
-    <ScrollArea className="border-x h-full w-[40rem] flex flex-col justify-end items-start">
+    <ScrollArea className="lg:w-[40rem] flex flex-col lg:justify-start w-full items-center border-x">
       {data?.map((item, idx) => {
         return (
-          <div className="px-10 py-2 flex flex-col w-full" key={item.id}>
+          <div
+            className="px-5 lg:px-10 py-2 flex flex-col gap-2 lg:gap-0 w-full"
+            key={item.id}
+          >
             {/* Chat Header */}
             {item.userId !== data[idx - 1]?.userId! && (
               <div

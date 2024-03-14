@@ -19,40 +19,88 @@ function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <div className="left-0 top-0 w-fit flex flex-col justify-start gap-10 p-5 border-r border-r-gray-500">
-      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
-        <Link href={`/${session?.user?.id}`}>
-          <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
-            <AvatarImage src={session?.user?.image!} />
-            <AvatarFallback className="text-gray-800">CN</AvatarFallback>
-          </Avatar>
-        </Link>
-      </Button>
+    <>
+      <div className=" lg:fixed hidden h-full lg:border-r left-0 top-0 w-fit lg:flex flex-col justify-start gap-10 p-5 ">
+        <Button
+          className=" bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href={`/${session?.user?.id}`}>
+            <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
+              <AvatarImage src={session?.user?.image!} />
+              <AvatarFallback className="text-gray-800">CN</AvatarFallback>
+            </Avatar>
+          </Link>
+        </Button>
 
-      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
-        <Link href="/explore">
-          <MdOutlineExplore className="h-9 w-9 text-gray-800" />
-        </Link>
-      </Button>
+        <Button
+          className="bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href="/explore">
+            <MdOutlineExplore className="h-9 w-9 text-gray-800" />
+          </Link>
+        </Button>
 
-      <Button className="bg-transparent hover:bg-transparent w-fit p-0" asChild>
-        <Link href="/">
-          <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
-        </Link>
-      </Button>
-      <div>
-        <RoomCreateModal />
+        <div>
+          <RoomCreateModal />
+        </div>
+
+        <Button
+          className="bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href="/">
+            <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
+          </Link>
+        </Button>
+
+        <Button
+          className=" bg-transparent hover:bg-transparent w-fit p-0 lg:self-end"
+          onClick={() => {
+            signOut();
+          }}
+        >
+          <FiLogOut className="h-9 w-9 text-gray-800" />
+        </Button>
       </div>
 
-      <Button
-        className="bg-transparent hover:bg-transparent w-fit p-0 self-end"
-        onClick={() => {
-          signOut();
-        }}
-      >
-        <FiLogOut className="h-9 w-9 text-gray-800" />
-      </Button>
-    </div>
+      {/* Mobile */}
+      <div className="border-t flex justify-evenly items-center py-4 lg:hidden">
+        <Button
+          className=" bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href="/explore">
+            <MdOutlineExplore className="h-9 w-9 text-gray-800" />
+          </Link>
+        </Button>
+
+        <div>
+          <RoomCreateModal />
+        </div>
+
+        <Button
+          className=" bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href="/">
+            <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
+          </Link>
+        </Button>
+        <Button
+          className="bg-transparent hover:bg-transparent w-fit p-0"
+          asChild
+        >
+          <Link href={`/${session?.user?.id}`}>
+            <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
+              <AvatarImage src={session?.user?.image!} />
+              <AvatarFallback className="text-gray-800">CN</AvatarFallback>
+            </Avatar>
+          </Link>
+        </Button>
+      </div>
+    </>
   );
 }
 

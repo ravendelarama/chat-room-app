@@ -11,8 +11,8 @@ async function ExplorePage() {
   }
 
   return (
-    <div className="p-10">
-      <ScrollArea>
+    <div className=" w-full lg:p-10 lg:pl-24">
+      <ScrollArea className="w-full">
         <PublicRoomList />
       </ScrollArea>
     </div>

@@ -1,6 +1,7 @@
 "use server"
 
 import { auth } from "@/auth";
+import { utapi } from "@/server/uploadthing";
 import db from "@/lib/db";
 import { pusher } from "@/lib/pusher";
 import z from "zod";
@@ -38,13 +39,19 @@ export async function deleteMessage(roomId: string, messageId: string) {
             id: messageId
         },
         data: {
-            deletedAt: new Date()
+            deletedAt: new Date(),
         },
         include: {
             attachments: true,
             user: true
         }
     });
+
+    const attachments = deleted.attachments.map((item) => {
+        return item.source
+    });
+
+    await utapi.deleteFiles(attachments);
 
     await pusher.trigger(roomId, "message:remove", deleted);
 

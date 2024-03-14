@@ -17,10 +17,10 @@ import {
 
 function RoomCreateModal() {
   return (
-    <>
+    <div className="flex justify-center items-center">
       <Dialog>
         <DialogTrigger>
-          <IoAddCircleOutline className="h-9 w-9" />
+          <IoAddCircleOutline className="h-9 w-9 text-gray-800" />
         </DialogTrigger>
         <DialogContent className="w-fit">
           <DialogHeader>
@@ -30,7 +30,7 @@ function RoomCreateModal() {
           <RoomForm />
         </DialogContent>
       </Dialog>
-    </>
+    </div>
   );
 }
 

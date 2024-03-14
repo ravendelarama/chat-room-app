@@ -33,6 +33,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { MdPermMedia } from "react-icons/md";
 import addAttachment from "@/actions/attachment";
+import { IoSend } from "react-icons/io5";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   message: z.string().min(1, {
@@ -60,7 +62,7 @@ function MessageForm({ roomId }: { roomId: string }) {
   }
 
   return (
-    <div className="flex items-center gap-5">
+    <div className="fixed bottom-0 w-full flex justify-center items-center gap-4 py-4 bg-background">
       <Dialog>
         <DialogTrigger>
           <MdPermMedia className="h-7 w-7 text-gray-800" />
@@ -98,7 +100,7 @@ function MessageForm({ roomId }: { roomId: string }) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-center gap-4"
+          className="flex justify-evenly items-center gap-4"
         >
           <FormField
             control={form.control}
@@ -106,13 +108,20 @@ function MessageForm({ roomId }: { roomId: string }) {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Textarea
+                    placeholder="Enter a message"
+                    className="resize-none w-50 lg:w-80 rounded-lg min-h-10 outline-none"
+                    maxLength={200}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Send</Button>
+          <Button className="h-8 w-12" type="submit">
+            <IoSend className=" h-5 w-5" />
+          </Button>
         </form>
       </Form>
     </div>

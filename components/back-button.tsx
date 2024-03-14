@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
+import { IoIosArrowBack } from "react-icons/io";
 
 function BackButton() {
   const router = useRouter();
@@ -9,12 +10,12 @@ function BackButton() {
   return (
     <>
       <Button
-        variant={"secondary"}
+        variant={null}
         onClick={() => {
           router.back();
         }}
       >
-        Back
+        <IoIosArrowBack className="h-5 w-5" />
       </Button>
     </>
   );

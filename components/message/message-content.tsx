@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import ImageAttachment from "./image-attachment";
 import { useSession } from "next-auth/react";
+import VideoPlayer from "./video-attachment";
 
 type Message = {
   id: string;
@@ -78,7 +79,7 @@ function MessageContent({ item }: Prop) {
       )}
       <div
         className={cn(
-          "pl-16 flex flex-col gap-y-2",
+          "lg:pl-16 flex flex-col gap-y-2",
           item.userId === session?.user?.id &&
             "pl-0 flex-row-reverse justify-start"
         )}
@@ -89,12 +90,17 @@ function MessageContent({ item }: Prop) {
             item.userId === session?.user?.id && "items-end"
           )}
         >
-          {item.content.length > 0 && (
+          {(item.content.length > 0 ||
+            (item.attachments &&
+              item.content.length == 0 &&
+              item.deletedAt)) && (
             <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
               <p
                 className={cn(
                   "text-sm font-semibold text-gray-800 text-wrap break-words",
-                  item.content.length > 24 && !item?.deletedAt && "w-[20rem]",
+                  item.content.length > 24 &&
+                    !item?.deletedAt &&
+                    "w-[16rem] lg:w-[20rem]",
                   item?.deletedAt && "italic font-normal"
                 )}
               >
@@ -114,6 +120,15 @@ function MessageContent({ item }: Prop) {
               item.attachments.map((item) => {
                 if (item.type.startsWith("image")) {
                   return <ImageAttachment item={item} key={item.id} />;
+                }
+                if (item.type.startsWith("video")) {
+                  return (
+                    <VideoPlayer
+                      data={{
+                        url: item.source,
+                      }}
+                    />
+                  );
                 }
               })}
           </div>

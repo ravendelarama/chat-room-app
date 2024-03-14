@@ -16,7 +16,7 @@ function envPusherKey() {
         return "56007b83ee44bcbc8ae6";
     } 
 
-    return "56007b83ee44bcbc8ae6";
+    return "16a65786789d773ad790";
 }
 
 export const pusherClient = new Pusherjs(envPusherKey(), {

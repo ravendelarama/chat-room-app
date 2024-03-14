@@ -20,8 +20,8 @@ function Chat({ roomId }: Prop) {
     },
   });
   return (
-    <>
-      <div className="flex justify-between items-center w-full ">
+    <div className="relative w-full flex flex-col justify-start items-center">
+      <div className="bg-background z-20 sticky top-0 flex justify-between px-4 items-center py-2 w-full lg:w-[40rem]">
         <BackButton />
         <h1 className="text-2xl font-bold">{room?.name}</h1>
         <Badge
@@ -33,7 +33,7 @@ function Chat({ roomId }: Prop) {
       </div>
       <MessageList messages={room?.messages} roomId={roomId} />
       <MessageForm roomId={roomId} />
-    </>
+    </div>
   );
 }
 
