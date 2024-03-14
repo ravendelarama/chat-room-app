@@ -5,6 +5,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import TanstackQueryProvider from "@/components/provider/tanstack-query";
 import { Toaster } from "@/components/ui/sonner";
+import ThemeProvider from "@/components/provider/theme-provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,11 +21,18 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <SessionProvider session={session}>
         <body className={inter.className}>
-          <TanstackQueryProvider>{children}</TanstackQueryProvider>
-          <Toaster />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <TanstackQueryProvider>{children}</TanstackQueryProvider>
+            <Toaster />
+          </ThemeProvider>
         </body>
       </SessionProvider>
     </html>

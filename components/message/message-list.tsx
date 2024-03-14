@@ -66,7 +66,7 @@ function MessageList({ messages, roomId }: Prop) {
   });
 
   return (
-    <ScrollArea className="lg:w-[40rem] pb-[10rem] flex flex-col lg:justify-start w-full items-center border-x">
+    <ScrollArea className="h-full lg:w-[40rem] pb-[10rem] flex flex-col lg:justify-start w-full items-center border-x">
       {data?.map((item, idx) => {
         return (
           <div
@@ -86,7 +86,7 @@ function MessageList({ messages, roomId }: Prop) {
                   <ChatUserAvatar item={item} />
                 )}
                 <div>
-                  <p className="font-bold text-sm text-slate-800">
+                  <p className="font-bold text-sm">
                     {item.userId !== session?.user?.id ? item.user.name : "You"}
                   </p>
                 </div>

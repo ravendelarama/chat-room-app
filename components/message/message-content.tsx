@@ -67,6 +67,7 @@ function MessageContent({ item }: Prop) {
             <DropdownMenuItem asChild>
               <Button
                 variant={null}
+                className="text-destructive"
                 onClick={async () => {
                   await deleteMessage(item.roomId, item.id);
                 }}
@@ -97,7 +98,7 @@ function MessageContent({ item }: Prop) {
             <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
               <p
                 className={cn(
-                  "text-sm font-semibold text-gray-800 text-wrap break-words",
+                  "text-sm font-semibold text-wrap break-words",
                   item.content.length > 24 &&
                     !item?.deletedAt &&
                     "w-[16rem] lg:w-[20rem]",

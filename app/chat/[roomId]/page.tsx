@@ -38,7 +38,7 @@ async function ChatRoomPage({ params: { roomId } }: Prop) {
   });
 
   return (
-    <div className="">
+    <div className="h-full">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <Chat roomId={roomId} />
       </HydrationBoundary>

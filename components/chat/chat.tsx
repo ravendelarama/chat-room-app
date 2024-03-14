@@ -20,7 +20,7 @@ function Chat({ roomId }: Prop) {
     },
   });
   return (
-    <div className="relative w-full flex flex-col justify-start items-center">
+    <div className="relative h-full w-full flex flex-col justify-start items-center">
       <div className="bg-background z-20 sticky top-0 flex justify-between px-4 items-center py-2 w-full lg:w-[40rem]">
         <BackButton />
         <h1 className="text-2xl font-bold">{room?.name}</h1>

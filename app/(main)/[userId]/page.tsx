@@ -1,4 +1,5 @@
 import { auth } from "@/auth";
+import { ModeToggle } from "@/components/theme/dark-mode";
 
 interface Prop {
   params: {
@@ -12,6 +13,7 @@ async function ProfilePage({ params: { userId } }: Prop) {
   return (
     <div>
       {session?.user.id == userId ? session?.user?.name : "Profile Page"}
+      <ModeToggle />
     </div>
   );
 }

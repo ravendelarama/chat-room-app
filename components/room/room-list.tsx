@@ -34,7 +34,7 @@ function PublicRoomList() {
         return (
           <div
             key={item.id}
-            className="py-4 px-2 lg:px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
+            className="py-4 px-2 lg:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-full"
           >
             <div className="flex justify-start flex-col items-start gap-1 w-full">
               <div className="w-full lg:w-[16rem]">
@@ -83,7 +83,7 @@ function PublicRoomList() {
                             {item.private ? "Private" : "Public"}
                           </Badge>
                         </div>
-                        <p className="text-gray-800 text-sm font-semibold text-wrap break-words w-[29rem]">
+                        <p className="text-muted-foreground text-sm font-semibold text-wrap break-words w-[29rem]">
                           {item.description}
                         </p>
                       </DialogHeader>
@@ -109,14 +109,14 @@ function PublicRoomList() {
                   </Dialog>
                 </div>
                 <div className="flex gap-2 lg:flex-col">
-                  <p className="text-gray-500 font-bold text-xs flex">
+                  <p className="text-accent-foreground font-bold text-xs flex">
                     <PiUsersThreeFill className="h-4 w-4" />
                     &nbsp;{item.memberIDs.length}
                   </p>
                   <div className="flex justify-between item-center">
                     <p
                       className={cn(
-                        "truncate text-left text-xs text-semibold text-gray-500 w-52",
+                        "truncate text-left text-xs text-semibold text-muted-foreground w-52",
                         item?.description?.length! < 1 && "py-2"
                       )}
                     >

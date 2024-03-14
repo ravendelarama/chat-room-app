@@ -65,7 +65,7 @@ function MessageForm({ roomId }: { roomId: string }) {
     <div className="fixed bottom-0 w-full flex justify-center items-center gap-4 py-4 bg-background">
       <Dialog>
         <DialogTrigger>
-          <MdPermMedia className="h-7 w-7 text-gray-800" />
+          <MdPermMedia className="h-7 w-7" />
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
