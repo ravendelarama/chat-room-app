@@ -20,7 +20,7 @@ function RoomCreateModal() {
     <div className="flex justify-center items-center">
       <Dialog>
         <DialogTrigger>
-          <IoAddCircleOutline className="h-9 w-9 text-gray-800" />
+          <IoAddCircleOutline className="h-7 w-7 lg:h-9 lg:w-9 text-gray-800" />
         </DialogTrigger>
         <DialogContent className="w-fit">
           <DialogHeader>

@@ -56,7 +56,7 @@ function Navbar() {
         </Button>
 
         <Button
-          className=" bg-transparent hover:bg-transparent w-fit p-0 lg:self-end"
+          className=" bg-transparent hover:bg-transparent w-fit p-0"
           onClick={() => {
             signOut();
           }}
@@ -72,7 +72,7 @@ function Navbar() {
           asChild
         >
           <Link href="/explore">
-            <MdOutlineExplore className="h-9 w-9 text-gray-800" />
+            <MdOutlineExplore className="h-7 w-7 text-gray-800" />
           </Link>
         </Button>
 
@@ -85,7 +85,7 @@ function Navbar() {
           asChild
         >
           <Link href="/">
-            <IoChatbubbleOutline className="h-9 w-9 text-gray-800" />
+            <IoChatbubbleOutline className="h-7 w-7 text-gray-800" />
           </Link>
         </Button>
         <Button
@@ -93,7 +93,7 @@ function Navbar() {
           asChild
         >
           <Link href={`/${session?.user?.id}`}>
-            <Avatar className="hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
+            <Avatar className="h-7 w-7 hover:border-2 transition-all duration-75 ease-in hover:border-cyan-500">
               <AvatarImage src={session?.user?.image!} />
               <AvatarFallback className="text-gray-800">CN</AvatarFallback>
             </Avatar>

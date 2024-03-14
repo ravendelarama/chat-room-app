@@ -33,10 +33,10 @@ function PublicRoomList() {
         return (
           <div
             key={item.id}
-            className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
+            className="py-4 px-2 lg:px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
           >
-            <div className="flex justify-start flex-row gap-5 lg:flex-col lg:items-start lg:gap-1 w-full">
-              <div className="w-[10rem] lg:w-[16rem]">
+            <div className="flex justify-start flex-col items-start gap-1 w-full">
+              <div className="w-full lg:w-[16rem]">
                 <AspectRatio ratio={16 / 9}>
                   <Image
                     src={`https://utfs.io/f/${item.image!}`}

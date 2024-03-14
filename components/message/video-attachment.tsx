@@ -15,8 +15,12 @@ function VideoPlayer({
           src={`https://utfs.io/f/${data?.url}`}
         ></video>
       </DialogTrigger>
-      <DialogContent className="relative bg-transparent shadow-none border-hidden h-full">
-        <video controls autoPlay src={`https://utfs.io/f/${data?.url}`}></video>
+      <DialogContent className=" bg-transparent shadow-none border-hidden">
+        <video
+          controls
+          className="aspect-video"
+          src={`https://utfs.io/f/${data?.url}`}
+        ></video>
       </DialogContent>
     </Dialog>
   );
