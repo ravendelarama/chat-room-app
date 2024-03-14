@@ -66,7 +66,7 @@ function MessageList({ messages, roomId }: Prop) {
   });
 
   return (
-    <ScrollArea className="lg:w-[40rem] flex flex-col lg:justify-start w-full items-center border-x">
+    <ScrollArea className="lg:w-[40rem] pb-[10rem] flex flex-col lg:justify-start w-full items-center border-x">
       {data?.map((item, idx) => {
         return (
           <div
