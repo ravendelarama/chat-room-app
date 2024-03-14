@@ -124,6 +124,7 @@ function MessageContent({ item }: Prop) {
                 if (item.type.startsWith("video")) {
                   return (
                     <VideoPlayer
+                      key={item.id}
                       data={{
                         url: item.source,
                       }}
