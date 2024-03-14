@@ -45,10 +45,10 @@ function PrivateRoomList() {
         return (
           <div
             key={item.id}
-            className="py-4 px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
+            className="py-4 px-2 lg:px-5 w-full relative bg-slate-100 hover:bg-slate-300 rounded-md sm:w-[18rem] h-full"
           >
-            <div className="flex justify-start flex-row gap-5 lg:flex-col lg:items-start lg:gap-1 w-full">
-              <div className="w-[10rem] lg:w-[16rem]">
+            <div className="flex justify-start flex-col items-start gap-1 w-full">
+              <div className="w-full lg:w-[16rem]">
                 <AspectRatio ratio={16 / 9}>
                   <Image
                     src={`https://utfs.io/f/${item.image!}`}
@@ -78,7 +78,13 @@ function PrivateRoomList() {
                         </AspectRatio>
                       </div>
                       <DialogHeader>
-                        <DialogTitle>{item.name}</DialogTitle>
+                        <div className="flex justify-between items-center">
+                          <h1>{item.name}</h1>
+                          <ChannelOptions
+                            roomId={item.id}
+                            isPrivate={item.private}
+                          />
+                        </div>
                         <div className="flex justify-start item-center gap-2">
                           <p className="flex items-center gap-1 font-bold text-sm">
                             <PiUsersThreeFill className="h-5 w-5 text-gray-500" />

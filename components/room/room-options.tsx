@@ -26,9 +26,9 @@ function ChannelOptions({
       <DropdownMenuContent>
         <DropdownMenuLabel>Channel Options</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem></DropdownMenuItem>
-        <DropdownMenuItem>{isPrivate ? "Private" : "Public"}</DropdownMenuItem>
-        <DropdownMenuItem>Rename</DropdownMenuItem>
+        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="text-destructive">Report</DropdownMenuItem>
         <DropdownMenuItem>
           <Button
             variant={null}

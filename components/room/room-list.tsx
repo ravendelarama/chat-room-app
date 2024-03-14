@@ -21,6 +21,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Badge } from "../ui/badge";
+import ChannelOptions from "./room-options";
 
 function PublicRoomList() {
   const { rooms, status, fetchStatus, error } = useRooms();
@@ -66,7 +67,13 @@ function PublicRoomList() {
                         </AspectRatio>
                       </div>
                       <DialogHeader>
-                        <DialogTitle>{item.name}</DialogTitle>
+                        <div className="flex justify-between items-center">
+                          <h1>{item.name}</h1>
+                          <ChannelOptions
+                            roomId={item.id}
+                            isPrivate={item.private}
+                          />
+                        </div>
                         <div className="flex justify-start item-center gap-2">
                           <p className="flex items-center gap-1 font-bold text-sm">
                             <PiUsersThreeFill className="h-5 w-5 text-gray-500" />
