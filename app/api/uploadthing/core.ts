@@ -32,7 +32,7 @@ export const ourFileRouter = {
   messageAttachment: f({
     image: { maxFileSize: "4MB", maxFileCount: 4 },
     video: { maxFileCount: 1, maxFileSize: "128MB" },
-    audio: { maxFileSize: "8MB", maxFileCount: 1 },
+    audio: { maxFileSize: "32MB", maxFileCount: 1 },
     pdf: { maxFileSize: "16MB", maxFileCount: 1 }
   })
         .middleware(async ({ req }) => {

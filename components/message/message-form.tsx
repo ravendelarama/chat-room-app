@@ -3,9 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import axios from "axios";
-
-import { UploadButton } from "@/utils/uploadthing";
 
 import {
   Form,
@@ -14,27 +11,13 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
-import { Input } from "@/components/ui/input";
 
 import { Button } from "@/components/ui/button";
-import { auth } from "@/auth";
 import { useSession } from "next-auth/react";
 import addMessage from "@/actions/chat";
-import { useState } from "react";
-import { toast } from "sonner";
-import { MdPermMedia } from "react-icons/md";
-import addAttachment from "@/actions/attachment";
 import { IoSend } from "react-icons/io5";
 import { Textarea } from "../ui/textarea";
+import AttachmentUploaderModal from "./attachment-uploader-modal";
 
 const formSchema = z.object({
   message: z.string().min(1, {
@@ -42,13 +25,7 @@ const formSchema = z.object({
   }),
 });
 
-interface UploadedFile {
-  type: string;
-  source: string;
-}
-
 function MessageForm({ roomId }: { roomId: string }) {
-  const { data: session } = useSession();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,40 +39,8 @@ function MessageForm({ roomId }: { roomId: string }) {
   }
 
   return (
-    <div className="fixed bottom-0 w-full flex justify-center items-center gap-4 py-4 bg-background">
-      <Dialog>
-        <DialogTrigger>
-          <MdPermMedia className="h-7 w-7" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Upload your files here?</DialogTitle>
-          </DialogHeader>
-          <UploadButton
-            endpoint="messageAttachment"
-            onClientUploadComplete={async (res) => {
-              // Do something with the response
-              console.log("Files: ", res);
-              await addAttachment(
-                roomId,
-                res.map((item) => {
-                  const src = item.url.split("/");
-                  return {
-                    type: item.type,
-                    source: src[src.length - 1],
-                  };
-                })
-              );
-
-              toast("Files Uploaded Successfully!");
-            }}
-            onUploadError={(error: Error) => {
-              // Do something with the error.
-              alert(`ERROR! ${error.message}`);
-            }}
-          />
-        </DialogContent>
-      </Dialog>
+    <div className="fixed bottom-0 w-80 flex justify-center items-center gap-4 pb-4 pt-0 bg-background">
+      <AttachmentUploaderModal roomId={roomId} />
 
       <Form {...form}>
         <form
@@ -110,7 +55,7 @@ function MessageForm({ roomId }: { roomId: string }) {
                 <FormControl>
                   <Textarea
                     placeholder="Enter a message"
-                    className="resize-none w-50 lg:w-80 rounded-lg min-h-10 outline-none"
+                    className="resize-none w-50 sm:w-80 rounded-lg min-h-10 outline-none"
                     maxLength={200}
                     {...field}
                   />
@@ -119,8 +64,8 @@ function MessageForm({ roomId }: { roomId: string }) {
               </FormItem>
             )}
           />
-          <Button className="h-8 w-12" type="submit">
-            <IoSend className=" h-5 w-5" />
+          <Button variant={null} className="p-0 bg-transparent" type="submit">
+            <IoSend className="h-7 w-7 text-primary" />
           </Button>
         </form>
       </Form>

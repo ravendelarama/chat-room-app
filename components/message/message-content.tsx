@@ -1,21 +1,8 @@
-import { deleteMessage } from "@/actions/chat";
-import { pusherClient } from "@/lib/pusher";
 import { cn } from "@/lib/utils";
 import { Attachment } from "@prisma/client";
-import { useState } from "react";
-import { Button } from "../ui/button";
-import { SlOptionsVertical } from "react-icons/sl";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import ImageAttachment from "./image-attachment";
 import { useSession } from "next-auth/react";
-import VideoPlayer from "./video-attachment";
+import Attachments from "./attachments";
+import MessageOptions from "./message-options";
 
 type Message = {
   id: string;
@@ -43,7 +30,6 @@ interface Prop {
 
 function MessageContent({ item }: Prop) {
   const { data: session } = useSession();
-  const [deleted, setDeleted] = useState<Message | null>(null);
 
   return (
     <div
@@ -52,35 +38,15 @@ function MessageContent({ item }: Prop) {
         item.userId !== session?.user.id && "flex-row-reverse"
       )}
     >
-      {!item.deletedAt && (
-        <DropdownMenu>
-          <DropdownMenuTrigger
-            className={cn(
-              "pb-3 outline-none",
-              session?.user?.id !== item.userId && "hidden"
-            )}
-          >
-            <SlOptionsVertical />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuLabel>Edit</DropdownMenuLabel>
-            <DropdownMenuItem asChild>
-              <Button
-                variant={null}
-                className="text-destructive"
-                onClick={async () => {
-                  await deleteMessage(item.roomId, item.id);
-                }}
-              >
-                Delete message
-              </Button>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
+      <MessageOptions
+        roomId={item.roomId}
+        messageId={item.id}
+        userId={item.userId}
+        deletedAt={item.deletedAt}
+      />
       <div
         className={cn(
-          "lg:pl-16 flex flex-col gap-y-2",
+          "md:pl-16 flex flex-col gap-y-2",
           item.userId === session?.user?.id &&
             "pl-0 flex-row-reverse justify-start"
         )}
@@ -98,10 +64,10 @@ function MessageContent({ item }: Prop) {
             <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
               <p
                 className={cn(
-                  "text-sm font-semibold text-wrap break-words",
+                  "text-xs md:text-sm font-bold md:font-semibold text-wrap break-words",
                   item.content.length > 24 &&
                     !item?.deletedAt &&
-                    "w-[16rem] lg:w-[20rem]",
+                    "w-[16rem] md:w-[20rem]",
                   item?.deletedAt && "italic font-normal"
                 )}
               >
@@ -111,29 +77,11 @@ function MessageContent({ item }: Prop) {
           )}
 
           {/* Rendering multiple attachments */}
-          <div
-            className={cn(
-              "flex flex-col items-end gap-y-4",
-              item.userId != session?.user?.id && "items-start"
-            )}
-          >
-            {!item.deletedAt &&
-              item.attachments.map((item) => {
-                if (item.type.startsWith("image")) {
-                  return <ImageAttachment item={item} key={item.id} />;
-                }
-                if (item.type.startsWith("video")) {
-                  return (
-                    <VideoPlayer
-                      key={item.id}
-                      data={{
-                        url: item.source,
-                      }}
-                    />
-                  );
-                }
-              })}
-          </div>
+          <Attachments
+            userId={item.userId}
+            deletedAt={item.deletedAt}
+            attachments={item.attachments}
+          />
         </div>
       </div>
     </div>

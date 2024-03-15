@@ -10,7 +10,10 @@ async function POST(req: Request) {
 
     const presenceData = {
         user_id: session?.user.id!,
-        name: session?.user.name
+        user_info: {
+            name: session?.user?.name,
+            email: session?.user?.email
+        }
     }
 
     const pusherAuth = pusher.authorizeChannel(

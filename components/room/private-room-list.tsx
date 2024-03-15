@@ -40,15 +40,15 @@ function PrivateRoomList() {
   const { data: session } = useSession();
 
   return (
-    <div className="py-4 px-2 lg:pl-6 w-full flex flex-col gap-2 lg:flex-row">
+    <div className="py-4 px-2 md:pl-6 w-full flex flex-col gap-2 md:flex-row">
       {joinedRooms?.map((item) => {
         return (
           <div
             key={item.id}
-            className="py-4 px-2 lg:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-full"
+            className="py-4 px-4 md:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-full"
           >
             <div className="flex justify-start flex-col items-start gap-1 w-full">
-              <div className="w-full lg:w-[16rem]">
+              <div className="w-full md:w-[16rem]">
                 <AspectRatio ratio={16 / 9}>
                   <Image
                     src={`https://utfs.io/f/${item.image!}`}
@@ -60,14 +60,14 @@ function PrivateRoomList() {
               </div>
 
               <div className="flex flex-col gap-2 w-full">
-                <div className="flex gap-2 justify-between items-center w-full lg:pt-3">
+                <div className="flex gap-2 justify-between items-center w-full md:pt-3">
                   <h1 className="text-lg font-bold">{item.name!}</h1>
                   <Dialog>
                     <DialogTrigger asChild>
                       <Button>View</Button>
                     </DialogTrigger>
                     <DialogContent>
-                      <div className="w-[29rem]">
+                      <div className="md:w-[29rem]">
                         <AspectRatio ratio={16 / 9}>
                           <Image
                             src={`https://utfs.io/f/${item.image!}`}
@@ -92,11 +92,14 @@ function PrivateRoomList() {
                             <PiUsersThreeFill className="h-5 w-5" />
                             {item.memberIDs.length}
                           </p>
-                          <Badge variant={item.private ? "default" : "outline"}>
+                          <Badge
+                            className="text-xs"
+                            variant={item.private ? "default" : "outline"}
+                          >
                             {item.private ? "Private" : "Public"}
                           </Badge>
                         </div>
-                        <p className="text-muted-foreground text-sm font-semibold text-wrap break-words w-[29rem]">
+                        <p className="text-muted-foreground text-left text-xs font-semibold text-wrap break-words md:w-[29rem]">
                           {item.description}
                         </p>
                       </DialogHeader>
@@ -121,12 +124,12 @@ function PrivateRoomList() {
                     </DialogContent>
                   </Dialog>
                 </div>
-                <div className="flex gap-2 lg:flex-col">
+                <div className="flex gap-2 md:flex-col">
                   <p className="text-accent-foreground font-bold text-xs flex">
                     <PiUsersThreeFill className="h-4 w-4" />
                     &nbsp;{item.memberIDs.length}
                   </p>
-                  <div className="flex justify-between item-center">
+                  <div className="flex justify-between items-center">
                     <p
                       className={cn(
                         "truncate text-left text-xs text-semibold text-muted-foreground w-52",

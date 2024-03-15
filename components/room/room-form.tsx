@@ -94,8 +94,11 @@ function RoomForm() {
   return (
     <div className="py-5">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="w-max">
-          <Tabs defaultValue="step-1" className="w-[400px]">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="w-[17rem] sm:w-max rounded-md"
+        >
+          <Tabs defaultValue="step-1" className="md:w-[400px]">
             <TabsList className="w-full">
               <TabsTrigger value="step-1" className="w-full">
                 Step 1
@@ -110,9 +113,7 @@ function RoomForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold text-gray-800">
-                      Channel Name
-                    </FormLabel>
+                    <FormLabel className="font-bold">Channel Name</FormLabel>
                     <FormControl>
                       <Input placeholder="My channel" {...field} />
                     </FormControl>
@@ -125,9 +126,7 @@ function RoomForm() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="font-bold text-gray-800">
-                      Description
-                    </FormLabel>
+                    <FormLabel className="font-bold">Description</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="Tell us a little bit about your channel"
@@ -137,16 +136,16 @@ function RoomForm() {
                       />
                     </FormControl>
                     <FormMessage />
-                    <FormDescription>
+                    <FormDescription className="text-xs">
                       This will appear when they visit your channel.
                     </FormDescription>
                   </FormItem>
                 )}
               />
             </TabsContent>
-            <TabsContent value="step-2">
+            <TabsContent value="step-2" className="flex flex-col gap-2">
               {/*Uploading Dropzone */}
-              <p className="font-bold text-gray-800">Channel Cover</p>
+              <p className="font-bold">Channel Cover</p>
               <div
                 {...getRootProps()}
                 className="relative border-2 border-dashed border-gray-300 focus:border-gray-800 px-5 pb-5 flex justify-center items-center rounded-md h-52"
@@ -166,7 +165,9 @@ function RoomForm() {
                     <span className="truncate w-32">{files[0]?.name!}</span>
                   </Button>
                 )}
-                {files.length == 0 && "Drop your files here!"}
+                <p className="text-sm text-muted-foreground">
+                  {files.length == 0 && "Drop your files here!"}
+                </p>
               </div>
 
               {/* Private Channel */}
@@ -176,10 +177,10 @@ function RoomForm() {
                 render={({ field }) => (
                   <FormItem className="flex items-center justify-between rounded-lg border p-3 shadow-sm">
                     <div className="space-y-0.5">
-                      <FormLabel className="text-gray-800 font-bold">
+                      <FormLabel className=" font-bold">
                         Private Channel
                       </FormLabel>
-                      <FormDescription>
+                      <FormDescription className="text-xs">
                         This channel won&apos;t appear in the public.
                       </FormDescription>
                     </div>
