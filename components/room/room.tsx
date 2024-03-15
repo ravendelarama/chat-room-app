@@ -12,12 +12,12 @@ import ChannelOptions from "./room-options";
 import { PiUsersThreeFill } from "react-icons/pi";
 import { Badge } from "../ui/badge";
 import joinRoom from "@/actions/join-room";
-import { Room } from "@prisma/client";
+import { Room as room } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-function Room({ item }: { item: Room }) {
+function Room({ item }: { item: room }) {
   const { data: session } = useSession();
   const router = useRouter();
 
