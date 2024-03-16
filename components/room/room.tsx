@@ -24,7 +24,7 @@ function Room({ item }: { item: room }) {
   return (
     <div
       key={item.id}
-      className="py-4 px-4 md:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-full"
+      className="py-4 px-4 md:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-fit"
     >
       <div className="flex justify-start flex-col items-start gap-1 w-full">
         <div className="w-full md:w-[16rem]">

@@ -1,38 +1,10 @@
 "use client";
 
-import useRooms from "@/hooks/use-rooms";
-import Link from "next/link";
-import { Button } from "../ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { Room } from "@prisma/client";
-import Image from "next/image";
-import { AspectRatio } from "../ui/aspect-ratio";
 import { useRouter } from "next/navigation";
-import { PiUsersThreeFill } from "react-icons/pi";
 import { useSession } from "next-auth/react";
-import joinRoom from "@/actions/join-room";
 import useJoinedChannels from "@/hooks/use-joined-channels";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
-import { Badge } from "../ui/badge";
-import { cn } from "@/lib/utils";
-import { deleteRoom } from "@/actions/room";
-import ChannelOptions from "./room-options";
+import { ScrollArea } from "../ui/scroll-area";
+import Room from "./room";
 
 function PrivateRoomList() {
   const { joinedRooms } = useJoinedChannels();
@@ -40,110 +12,9 @@ function PrivateRoomList() {
   const { data: session } = useSession();
 
   return (
-    <div className="py-4 px-2 md:pl-6 w-full flex flex-col gap-2 md:flex-row">
+    <div className="h-full py-20 lg:py-4 px-2 md:pl-0 items-center md:justify-center w-full flex flex-col overflow-y-auto gap-y-2 md:gap-2 md:flex-row md:flex-wrap">
       {joinedRooms?.map((item) => {
-        return (
-          <div
-            key={item.id}
-            className="py-4 px-4 md:px-5 w-full relative bg-secondary rounded-md sm:w-[18rem] h-full"
-          >
-            <div className="flex justify-start flex-col items-start gap-1 w-full">
-              <div className="w-full md:w-[16rem]">
-                <AspectRatio ratio={16 / 9}>
-                  <Image
-                    src={`https://utfs.io/f/${item.image!}`}
-                    alt={item.name!}
-                    fill
-                    className="object-cover rounded-md"
-                  />
-                </AspectRatio>
-              </div>
-
-              <div className="flex flex-col gap-2 w-full">
-                <div className="flex gap-2 justify-between items-center w-full md:pt-3">
-                  <h1 className="text-lg font-bold">{item.name!}</h1>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button>View</Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <div className="md:w-[29rem]">
-                        <AspectRatio ratio={16 / 9}>
-                          <Image
-                            src={`https://utfs.io/f/${item.image!}`}
-                            alt={item.name!}
-                            fill
-                            className="object-cover rounded-md"
-                          />
-                        </AspectRatio>
-                      </div>
-                      <DialogHeader>
-                        <div className="flex justify-between items-center">
-                          <h1 className="font-bold text-lg tracking-wide">
-                            {item.name}
-                          </h1>
-                          <ChannelOptions
-                            roomId={item.id}
-                            isPrivate={item.private}
-                          />
-                        </div>
-                        <div className="flex justify-start item-center gap-2">
-                          <p className="text-accent-foreground flex items-center gap-1 font-bold text-sm">
-                            <PiUsersThreeFill className="h-5 w-5" />
-                            {item.memberIDs.length}
-                          </p>
-                          <Badge
-                            className="text-xs"
-                            variant={item.private ? "default" : "outline"}
-                          >
-                            {item.private ? "Private" : "Public"}
-                          </Badge>
-                        </div>
-                        <p className="text-muted-foreground text-left text-xs font-semibold text-wrap break-words md:w-[29rem]">
-                          {item.description}
-                        </p>
-                      </DialogHeader>
-
-                      <DialogFooter>
-                        <Button
-                          className="outline-none w-full"
-                          size={"sm"}
-                          onClick={async () => {
-                            if (!item.memberIDs.includes(session?.user?.id!)) {
-                              const res = await joinRoom(item.id);
-                            } else {
-                              router.push(`/chat/${item.id}`);
-                            }
-                          }}
-                        >
-                          {!item.memberIDs.includes(session?.user?.id!)
-                            ? "Join Room"
-                            : "Connect"}
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-                <div className="flex gap-2 md:flex-col">
-                  <p className="text-accent-foreground font-bold text-xs flex">
-                    <PiUsersThreeFill className="h-4 w-4" />
-                    &nbsp;{item.memberIDs.length}
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <p
-                      className={cn(
-                        "truncate text-left text-xs text-semibold text-muted-foreground w-52",
-                        item?.description?.length! < 1 && "py-2"
-                      )}
-                    >
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
+        return <Room key={item.id} item={item} />;
       })}
     </div>
   );
