@@ -135,7 +135,7 @@ function MessageContent({ item, setShowTimeStamp }: Prop) {
                 </DialogHeader>
                 <div>
                   {item.likes.map((item) => {
-                    return <div>{item.userId}</div>;
+                    return <div key={item.id}>{item.userId}</div>;
                   })}
                 </div>
               </DialogContent>

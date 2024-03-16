@@ -72,7 +72,7 @@ function MemberList({ roomId }: { roomId: string }) {
         <CardContent>
           <div className="flex flex-col w-full gap-4">
             {data?.members.map((item) => (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2" key={item.id}>
                 <Avatar>
                   <AvatarImage src={item.image!} />
                   <AvatarFallback>CN</AvatarFallback>
