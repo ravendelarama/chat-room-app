@@ -20,7 +20,7 @@ function Navbar() {
 
   return (
     <>
-      <div className=" lg:fixed hidden h-full lg:border-r left-0 top-0 w-fit lg:flex flex-col justify-start gap-10 p-5 ">
+      <div className=" md:fixed hidden h-full lg:border-r left-0 top-0 w-fit md:flex flex-col justify-start gap-10 p-5 ">
         <Button
           className=" bg-transparent hover:bg-transparent w-fit p-0"
           asChild
@@ -66,7 +66,7 @@ function Navbar() {
       </div>
 
       {/* Mobile */}
-      <div className="border-t flex justify-center gap-7 items-center py-2 lg:hidden">
+      <div className="border-t flex justify-evenly items-center py-2 md:hidden">
         <Button
           className=" bg-transparent hover:bg-transparent w-fit p-0"
           asChild
