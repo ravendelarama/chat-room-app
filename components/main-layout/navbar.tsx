@@ -66,7 +66,7 @@ function Navbar() {
       </div>
 
       {/* Mobile */}
-      <div className="border-t flex justify-evenly items-center py-2 lg:hidden">
+      <div className="border-t flex justify-center gap-7 items-center py-2 lg:hidden">
         <Button
           className=" bg-transparent hover:bg-transparent w-fit p-0"
           asChild

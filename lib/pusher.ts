@@ -13,7 +13,7 @@ export const pusher = new Pusher({
 
 function envPusherKey() {
     if (process.env.NODE_ENV === "development") {
-        return "56007b83ee44bcbc8ae6";
+        return "cd14ccdd3e4d87506c1c";
     } 
 
     return "16a65786789d773ad790";

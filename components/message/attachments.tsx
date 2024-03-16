@@ -8,10 +8,14 @@ import { Attachment } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 function Attachments({
+  roomId,
+  messageId,
   userId,
   deletedAt,
   attachments,
 }: {
+  roomId: string;
+  messageId: string;
   userId: string;
   deletedAt: Date;
   attachments: Attachment[];
@@ -28,13 +32,22 @@ function Attachments({
       {!deletedAt &&
         attachments.map((item) => {
           if (item.type.startsWith("image")) {
-            return <ImageAttachment item={item} key={item.id} />;
+            return (
+              <ImageAttachment
+                roomId={roomId}
+                messageId={messageId}
+                item={item}
+                key={item.id}
+              />
+            );
           }
           if (item.type.startsWith("video")) {
             return (
               <VideoPlayer
                 key={item.id}
                 data={{
+                  roomId,
+                  messageId,
                   url: item.source,
                 }}
               />
@@ -43,6 +56,8 @@ function Attachments({
           if (item.type.startsWith("audio")) {
             return (
               <AudioAttachment
+                roomId={roomId}
+                messageId={messageId}
                 key={item.id}
                 source={item.source}
                 type={item.type}

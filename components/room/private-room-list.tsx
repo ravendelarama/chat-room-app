@@ -8,11 +8,9 @@ import Room from "./room";
 
 function PrivateRoomList() {
   const { joinedRooms } = useJoinedChannels();
-  const router = useRouter();
-  const { data: session } = useSession();
 
   return (
-    <div className="h-full py-20 lg:py-4 px-2 md:pl-0 items-center md:justify-center w-full flex flex-col overflow-y-auto gap-y-2 md:gap-2 md:flex-row md:flex-wrap">
+    <div className="px-2 w-full flex shrink-0 grow-0 justify-center md:justify-start gap-2 pt-20 md:pt-5 pb-5 flex-wrap overflow-auto h-full">
       {joinedRooms?.map((item) => {
         return <Room key={item.id} item={item} />;
       })}

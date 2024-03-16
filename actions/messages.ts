@@ -9,7 +9,9 @@ export default async function getMessages(roomId: string) {
         },
         include: {
             user: true,
-            attachments: true
+            attachments: true,
+            likes: true,
+            poll: true
         }
     });
 }

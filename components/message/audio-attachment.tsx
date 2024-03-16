@@ -1,6 +1,16 @@
 "use client";
 
-function AudioAttachment({ source, type }: { source: string; type: string }) {
+function AudioAttachment({
+  roomId,
+  messageId,
+  source,
+  type,
+}: {
+  roomId: string;
+  messageId: string;
+  source: string;
+  type: string;
+}) {
   return (
     <>
       <audio controls>

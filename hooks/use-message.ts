@@ -2,9 +2,9 @@
 
 import getMessages from "@/actions/messages";
 import { pusherClient } from "@/lib/pusher";
-import { Attachment, User } from "@prisma/client";
+import { Attachment, MessageLike, Poll, User } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useState } from "react";
 
 type Message = {
     id: string;
@@ -13,6 +13,8 @@ type Message = {
     roomId: string;
     createdAt: Date;
     updatedAt: Date;
+    likes: MessageLike[];
+    poll: Poll;
     user: {
         id: string;
         name: string;
@@ -25,16 +27,18 @@ type Message = {
     attachments: Attachment[]
 };
 
-function useMessage(initialData: Message[], roomId: string) {
+function useMessage(initialData: Message[], roomId: string, scrollRef: RefObject<HTMLDivElement>) {
     const { data } = useQuery({
         queryKey: ["chat", roomId],
         queryFn: async () => {
             const m = await getMessages(roomId);
             return m;
         },
+        // @ts-ignore
         initialData
     })
 
+    // @ts-ignore
     const [messages, setMessages] = useState<Message[]>(data);
 
     useEffect(() => {
@@ -42,6 +46,8 @@ function useMessage(initialData: Message[], roomId: string) {
         // @ts-ignore
         pusherClient.bind("message:create", (message) => {
             setMessages((prev) => [...prev!, message]);
+            
+            scrollRef?.current?.scrollIntoView();
         });
 
         // @ts-ignore
@@ -57,12 +63,43 @@ function useMessage(initialData: Message[], roomId: string) {
                 });
                 return newMessages
             })
+        });
+
+        // @ts-ignore
+        pusherClient.bind("message:like", (message) => {
+            setMessages((prev) => {
+                const newMessages = prev.map((item) => {
+                    if (item.id === message.id) {
+                        
+                        item.likes = [...message.likes]
+                    }
+                    return item
+                });
+                return newMessages
+            })
+        })
+
+        // @ts-ignore
+        pusherClient.bind("message:unlike", (message) => {
+            setMessages((prev) => {
+                const newMessages = prev.map((item) => {
+                    if (item.id === message.id) {
+                        
+                        item.likes = message.likes;
+                    }
+                    return item
+                });
+                return newMessages
+            })
         })
 
         
         return () => {
             pusherClient.unsubscribe(roomId);
             pusherClient.unbind("message:create")
+            pusherClient.unbind("messag:remove")
+            pusherClient.unbind("message:like")
+            pusherClient.unbind("message:unlike")
         }
     }, []);
     

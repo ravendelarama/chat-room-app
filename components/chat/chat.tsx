@@ -20,7 +20,7 @@ function Chat({ roomId }: Prop) {
     },
   });
   return (
-    <div className="relative h-full w-full flex flex-col justify-start items-center">
+    <div className="relative h-full w-full md:w-fit flex flex-col justify-center items-center">
       <div
         className="bg-background z-20 sticky top-0 flex justify-between px-4 items-center py-0
        w-full md:w-[40rem]"
@@ -34,6 +34,7 @@ function Chat({ roomId }: Prop) {
           {room?.private ? "Private" : "Public"}
         </Badge>
       </div>
+      {/* @ts-ignore */}
       <MessageList messages={room?.messages} roomId={roomId} />
       <MessageForm roomId={roomId} />
     </div>

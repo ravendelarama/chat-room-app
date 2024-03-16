@@ -1,8 +1,19 @@
 import { cn } from "@/lib/utils";
-import { Attachment } from "@prisma/client";
+import { Attachment, MessageLike, Poll } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Attachments from "./attachments";
 import MessageOptions from "./message-options";
+import { Button } from "../ui/button";
+import { FcLike } from "react-icons/fc";
+import { toggleLike } from "@/actions/chat";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
 
 type Message = {
   id: string;
@@ -12,6 +23,8 @@ type Message = {
   deletedAt: Date;
   createdAt: Date;
   updatedAt: Date;
+  likes: MessageLike[];
+  poll: Poll;
   user: {
     id: string;
     name: string;
@@ -26,11 +39,11 @@ type Message = {
 
 interface Prop {
   item: Message;
+  setShowTimeStamp: () => void;
 }
 
-function MessageContent({ item }: Prop) {
+function MessageContent({ item, setShowTimeStamp }: Prop) {
   const { data: session } = useSession();
-
   return (
     <div
       className={cn(
@@ -38,22 +51,24 @@ function MessageContent({ item }: Prop) {
         item.userId !== session?.user.id && "flex-row-reverse"
       )}
     >
-      <MessageOptions
-        roomId={item.roomId}
-        messageId={item.id}
-        userId={item.userId}
-        deletedAt={item.deletedAt}
-      />
+      <div className="flex flex-col pt-3">
+        <MessageOptions
+          roomId={item.roomId}
+          messageId={item.id}
+          userId={item.userId}
+          deletedAt={item.deletedAt}
+        />
+      </div>
       <div
         className={cn(
           "md:pl-16 flex flex-col gap-y-2",
           item.userId === session?.user?.id &&
-            "pl-0 flex-row-reverse justify-start"
+            "md:pl-0 flex-row-reverse justify-start"
         )}
       >
         <div
           className={cn(
-            "flex flex-col gap-y-4",
+            "flex flex-col gap-y-1",
             item.userId === session?.user?.id && "items-end"
           )}
         >
@@ -61,10 +76,22 @@ function MessageContent({ item }: Prop) {
             (item.attachments &&
               item.content.length == 0 &&
               item.deletedAt)) && (
-            <div className="bg-secondary rounded-lg py-2 px-4 w-fit">
+            <Button
+              className={cn(
+                "bg-secondary rounded-2xl rounded-tl py-2 px-4 w-fit outline-none flex justify-start",
+                session?.user.id === item.userId && "rounded-tr rounded-tl-2xl"
+              )}
+              variant={null}
+              onMouseEnter={setShowTimeStamp}
+              onMouseLeave={setShowTimeStamp}
+              onDoubleClick={async () => {
+                await toggleLike(item.roomId, item.id);
+              }}
+              disabled={!!item.deletedAt}
+            >
               <p
                 className={cn(
-                  "text-xs md:text-sm font-bold md:font-semibold text-wrap break-words",
+                  "text-xs md:text-sm font-bold md:font-semibold text-wrap break-words w-full text-start",
                   item.content.length > 24 &&
                     !item?.deletedAt &&
                     "w-[16rem] md:w-[20rem]",
@@ -73,15 +100,47 @@ function MessageContent({ item }: Prop) {
               >
                 {!item?.deletedAt ? item.content : "Message deleted"}
               </p>
-            </div>
+            </Button>
           )}
 
           {/* Rendering multiple attachments */}
           <Attachments
+            roomId={item.roomId}
+            messageId={item.id}
             userId={item.userId}
             deletedAt={item.deletedAt}
             attachments={item.attachments}
           />
+          {!item.deletedAt && item.likes.length > 0 ? (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button
+                  variant={null}
+                  size={"icon"}
+                  className={cn(
+                    "outline-none w-full p-0 flex justify-end",
+                    session?.user.id == item.userId && " justify-start"
+                  )}
+                >
+                  <FcLike className="h-4 w-4" />
+                  &nbsp;
+                  <span className="text-2xs font-bold">
+                    {item.likes.length}
+                  </span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Likes: {item.likes.length}</DialogTitle>
+                </DialogHeader>
+                <div>
+                  {item.likes.map((item) => {
+                    return <div>{item.userId}</div>;
+                  })}
+                </div>
+              </DialogContent>
+            </Dialog>
+          ) : null}
         </div>
       </div>
     </div>

@@ -22,7 +22,9 @@ export default async function addMessage(roomId: string, content: string) {
         },
         include: {
             attachments: true,
-            user: true
+            user: true,
+            likes: true,
+            poll: true
         }
     });
 
@@ -43,7 +45,9 @@ export async function deleteMessage(roomId: string, messageId: string) {
         },
         include: {
             attachments: true,
-            user: true
+            user: true,
+            likes: true,
+            poll: true
         }
     });
 
@@ -57,5 +61,85 @@ export async function deleteMessage(roomId: string, messageId: string) {
 
     return {
         message: "Message deleted!"
+    }
+}
+
+export async function toggleLike(roomId: string, messageId: string) {
+    const session = await auth();
+
+    const isLiked = await db.message.findFirst({
+        where: {
+            id: messageId,
+            likes: {
+                some: {
+                    userId: session?.user?.id
+                }
+            }
+        },
+        include: {
+            likes: {
+                select: {
+                    userId: true
+                }
+            }
+        }
+    });
+
+    if (!isLiked) {
+        const message = await db.message.update({
+            where: {
+                id: messageId
+            },
+            data: {
+                likes: {
+                    create: {
+                        userId: session?.user?.id!,
+                    }
+                }
+            },
+            include: {
+                user: true,
+                attachments: true,
+                likes: true,
+                poll: true
+            }
+        });
+    
+        console.log(`Likes: ${message.likes.length}`)
+    
+        await pusher.trigger(roomId, "message:like", message)
+    
+        return {
+            message: "Message liked!",
+            count: message.likes.length
+        }
+    }
+
+    const message = await db.message.update({
+        where: {
+            id: messageId
+        },
+        data: {
+            likes: {
+                deleteMany: {
+                    userId: session?.user?.id!
+                }
+            }
+        },
+        include: {
+            user: true,
+            attachments: true,
+            likes: true,
+            poll: true
+        }
+    });
+
+
+
+    await pusher.trigger(roomId, "message:like", message);
+
+    return {
+        message: "Unliked",
+        count: message.likes.length
     }
 }

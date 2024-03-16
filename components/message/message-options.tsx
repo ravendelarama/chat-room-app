@@ -4,12 +4,12 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SlOptionsVertical } from "react-icons/sl";
 import { deleteMessage } from "@/actions/chat";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 function MessageOptions({
   roomId,
@@ -36,7 +36,6 @@ function MessageOptions({
             <SlOptionsVertical />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>Edit</DropdownMenuLabel>
             <DropdownMenuItem asChild>
               <Button
                 variant={null}

@@ -14,8 +14,11 @@ export default async function getRoom(roomId: string) {
                 include: {
                     attachments: true,
                     user: true,
+                    likes: true,
+                    poll: true
                 },
             },
+            members: true
         },
     });
 }

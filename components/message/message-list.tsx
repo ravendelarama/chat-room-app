@@ -1,13 +1,14 @@
 "use client";
 
 import useMessage from "@/hooks/use-message";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "../ui/scroll-area";
-import { Attachment } from "@prisma/client";
+import { Attachment, MessageLike, Poll } from "@prisma/client";
 import { cn } from "@/lib/utils";
 import { useSession } from "next-auth/react";
 import MessageContent from "./message-content";
 import MessageHeader from "./message-header";
+import moment from "moment";
 
 interface Prop {
   messages:
@@ -16,8 +17,11 @@ interface Prop {
         content: string;
         roomId: string;
         userId: string;
+        deletedAt: Date;
         createdAt: Date;
         updatedAt: Date;
+        likes: MessageLike[];
+        poll: Poll;
         user: {
           id: string;
           name: string;
@@ -34,16 +38,28 @@ interface Prop {
 }
 
 function MessageList({ messages, roomId }: Prop) {
-  const { data } = useMessage(messages!, roomId);
+  const [showTimeStamp, setShowTimeStamp] = useState(false);
+
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { data } = useMessage(messages!, roomId, scrollRef);
   const { data: session } = useSession();
 
-  useEffect(() => {
-    scrollRef?.current?.scrollIntoView();
-  });
+  // @ts-ignore
+  function dateTime(current) {
+    const dt = moment(new Date(current.createdAt)).calendar(new Date(), {
+      sameDay: "h:mm a",
+      nextDay: "[Tomorrow]",
+      nextWeek: "dddd",
+      lastDay: "[Yesterday] h:mm a",
+      lastWeek: "[Last] dddd",
+      sameElse: "DD/MM/YYYY",
+    });
+
+    return dt;
+  }
 
   return (
-    <ScrollArea className="h-full md:w-[40rem] pb-[5rem] flex flex-col md:justify-start w-full items-center">
+    <ScrollArea className="h-full md:border-x md:w-[40rem] pb-[5rem] flex flex-col md:justify-start w-full items-center">
       {data?.map((item, idx) => {
         return (
           <div
@@ -53,6 +69,26 @@ function MessageList({ messages, roomId }: Prop) {
             {/* Chat Header */}
             <MessageHeader data={data} message={item} idx={idx} />
 
+            {
+              // @ts-ignore
+              !item.deletedAt ? (
+                moment(new Date(item.createdAt)).subtract(
+                  moment(new Date()).diff(item.createdAt, "days"),
+                  "days"
+                ) ? (
+                  <p
+                    className={cn(
+                      "text-xs md:pl-16 pb-1 text-primary transition-all duration-75 ease-in opacity-100",
+                      session?.user?.id == item.userId && "self-end",
+                      !showTimeStamp && "opacity-0"
+                    )}
+                  >
+                    {dateTime(item)}
+                  </p>
+                ) : null
+              ) : null
+            }
+
             {/* Chat Bubble */}
             <div
               className={cn(
@@ -60,8 +96,13 @@ function MessageList({ messages, roomId }: Prop) {
                 item.userId !== session?.user?.id && "flex-row-reverse"
               )}
             >
-              {/* @ts-ignore */}
-              <MessageContent item={item} />
+              <MessageContent
+                // @ts-ignore
+                item={item}
+                setShowTimeStamp={() => {
+                  setShowTimeStamp(!showTimeStamp);
+                }}
+              />
             </div>
           </div>
         );

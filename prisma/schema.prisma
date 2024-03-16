@@ -33,17 +33,19 @@ model Account {
 }
 
 model User {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  // username String @unique
   name          String
-  email         String?   @unique
+  email         String?       @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   message       Message[]
-  rooms         Room[]    @relation(fields: [roomIDs], references: [id])
-  roomIDs       String[]  @db.ObjectId
-  createdAt     DateTime  @default(now()) @db.Timestamp
-  updatedAt     DateTime  @default(now()) @updatedAt @db.Timestamp
+  rooms         Room[]        @relation(fields: [roomIDs], references: [id])
+  roomIDs       String[]      @db.ObjectId
+  createdAt     DateTime      @default(now()) @db.Timestamp
+  updatedAt     DateTime      @default(now()) @updatedAt @db.Timestamp
+  messageLikes  MessageLike[]
 }
 
 model Room {
@@ -51,6 +53,12 @@ model Room {
   name        String
   memberIDs   String[]  @db.ObjectId
   members     User[]    @relation(fields: [memberIDs], references: [id])
+  // adminIDs String[] @db.ObjectId
+  // admins
+  // moderatorIDs String[] @db.ObjectId
+  // moderators
+  // bannedIDs String[] @db.ObjectId
+  // bannedMembers
   messages    Message[]
   description String?
   image       String?
@@ -69,14 +77,33 @@ model Attachment {
 }
 
 model Message {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
   content     String
-  userId      String       @db.ObjectId
-  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  room        Room         @relation(fields: [roomId], references: [id], onDelete: Cascade)
-  roomId      String       @db.ObjectId
+  userId      String        @db.ObjectId
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room        Room          @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  roomId      String        @db.ObjectId
   deletedAt   DateTime?
-  createdAt   DateTime     @default(now()) @db.Timestamp
-  updatedAt   DateTime     @default(now()) @updatedAt @db.Timestamp
+  createdAt   DateTime      @default(now()) @db.Timestamp
+  updatedAt   DateTime      @default(now()) @updatedAt @db.Timestamp
   attachments Attachment[]
+  likes       MessageLike[]
+  poll        Poll?
+}
+
+model MessageLike {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messageId String  @db.ObjectId
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+}
+
+model Poll {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  options   String[]
+  scores    Int[]
+  messageId String   @unique @db.ObjectId
+  message   Message  @relation(fields: [messageId], references: [id])
 }

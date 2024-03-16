@@ -1,3 +1,4 @@
+import { toggleLike } from "@/actions/chat";
 import {
   Dialog,
   DialogContent,
@@ -10,13 +11,19 @@ import { Attachment } from "@prisma/client";
 import Image from "next/image";
 
 interface Prop {
+  roomId: string;
+  messageId: string;
   item: Attachment;
 }
 
-function ImageAttachment({ item }: Prop) {
+function ImageAttachment({ roomId, messageId, item }: Prop) {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger
+        onDoubleClick={async () => {
+          await toggleLike(roomId, messageId);
+        }}
+      >
         <Image
           src={`https://utfs.io/f/${item.source!}`}
           alt={item.source}

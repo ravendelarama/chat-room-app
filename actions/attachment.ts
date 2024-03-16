@@ -42,7 +42,9 @@ export default async function addAttachment(roomId: string, attachments: {type: 
             },
             include: {
                 attachments: true,
-                user: true
+                user: true,
+                likes: true,
+                poll: true
             }
         })
 
