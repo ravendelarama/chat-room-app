@@ -78,7 +78,7 @@ function MessageContent({ item, setShowTimeStamp }: Prop) {
               item.deletedAt)) && (
             <Button
               className={cn(
-                "bg-secondary rounded-2xl rounded-tl py-2 px-4 w-fit outline-none flex justify-start",
+                "bg-secondary rounded-2xl rounded-tl py-2 px-4 w-fit h-fit outline-none flex justify-start",
                 session?.user.id === item.userId && "rounded-tr rounded-tl-2xl"
               )}
               variant={null}
